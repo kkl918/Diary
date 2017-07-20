@@ -1,0 +1,21 @@
+#in ipython notebook
+import pandas as pd
+import numpy  as np
+import matplotlib.pyplot as plt
+
+%matplotlib inline
+
+plt.rcParams['font.family']='SimHei' #display chinese
+
+#df = pd.read_csv('蔬菜產品日交易行情.csv', encoding ='big5')
+df = pd.read_csv('蔬菜產品日交易行情.csv',skiprows=[0], header=3, encoding ='big5')
+df = df[['日　　期','市　　場','產　　品','平均價(元/公斤)']]
+#df = df.isin(['FA1 黃秋葵'])
+#df = df[df['產　　品'].isin(['FA1 黃秋葵'])]
+#df = df.loc[df['產　　品'].isin(['FA1 黃秋葵'])]
+#df = df.loc[df['產　　品'] == 'FB11 花椰菜 青梗 留梗柄'] #OK!
+#df = df.loc[df['市　　場'] == '950 花蓮市']             #OK!
+#df = df.loc[df['產　　品'] == 'FA2 樊花']               #NOT OK
+#df = df.loc[df['產　　品'] == 'FD0 花胡瓜 其他'] #NOT OK
+#df = df.loc[df['產　　品'] == 'FA1 黃秋葵']
+df
