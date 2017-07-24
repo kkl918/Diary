@@ -1,0 +1,29 @@
+ㄆ爬蟲教學網站:http://blog.castman.net/
+
+import pandas as pd
+import numpy  as np
+import matplotlib.pyplot as plt
+
+%matplotlib inline
+
+plt.rcParams['font.family']='SimHei' #display chinese
+
+
+
+xls  = pd.read_excel("20170718_蔬菜產品日交易行情.xls", header=4)
+xls  = xls[['日　　期','市　　場','產　　品','平均價(元/公斤)']]
+xls  = xls.loc[xls['產　　品'] == 'FA1 黃秋葵  ']
+xls  = xls[xls['產　　品'] == 'FA1 黃秋葵  ']
+xls
+
+xls2 = pd.read_excel("20170719_蔬菜產品日交易行情.xls", header=4)
+xls2 = xls2[['日　　期','市　　場','產　　品','平均價(元/公斤)']]
+xls2 = xls2[xls2['產　　品'] == 'FA1 黃秋葵  ']
+xls2
+
+xls_mix = xls.append(xls2).reset_index()
+xls_mix
+
+#path = '/media/sf_SHARE/Data-master/'
+#xls.to_csv(path+'20170719_0.csv',sep=',',encoding='big5')
+#xls
