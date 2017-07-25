@@ -1,0 +1,23 @@
+import os
+import request
+
+payload = {
+	"FromCity:0",
+	"FromStation:1008",
+	"FromStationName:0",
+	"ToCity:10",
+	"ToStation:1238",
+	"ToStationName:0",
+	"TrainClass:2",
+	"searchdate:2017-07-25",
+	"FromTimeSelect:0000",
+	"ToTimeSelect:2359",
+	"Timetype:1",
+}
+
+
+res_post = request.post("http://twtraffic.tra.gov.tw/twrail/TW_SearchResult.aspx", data = paload)
+print(res_post.string)
+
+
+os.system("pause")
