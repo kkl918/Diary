@@ -1,3 +1,6 @@
+今日作業:寫一個會迴圈產生以下字串作為檔案名稱
+EX:20170725_data.txt, 20170726_data.txt, 20170727_data.txt
+
 import os
 import request
 
