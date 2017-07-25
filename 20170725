@@ -31,3 +31,26 @@ print(res_post.string)
 
 
 os.system("pause")
+-----------------------------------------------------------------------------------------------------
+https://www.youtube.com/watch?v=4bBtE8ZIDKk
+import os
+import requests
+
+payload = {
+    "ctl00$contentPlaceHolder$ucDateScope$rblDateScope":"D",
+    "ctl00$contentPlaceHolder$ucSolarLunar$radlSolarLunar":"S",
+    "ctl00$contentPlaceHolder$txtSTransDate":"106/07/25",
+    "ctl00$contentPlaceHolder$txtETransDate":"106/07/25",
+    "ctl00$contentPlaceHolder$txtMarket":"全部市場",
+    "ctl00$contentPlaceHolder$hfldMarketNo":"ALL",
+    "ctl00$contentPlaceHolder$txtProduct":"全部產品",
+    "ctl00$contentPlaceHolder$hfldProductNo":"ALL",
+    "ctl00$contentPlaceHolder$hfldProductType":"A",
+    "ctl00$contentPlaceHolder$btnXls":"下載Excel"
+}
+
+
+res_post = requests.post("http://amis.afa.gov.tw/fruit/FruitProdDayTransInfo.aspx", data = payload)
+#print(res_post.text)
+print(res_post.text)
+
