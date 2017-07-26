@@ -1,0 +1,49 @@
+import requests
+
+urls_dict = {
+	'phei':'http://www.phei.com.cn',
+	'data':'http://www.phei.com.cn/module/zygl/zxzyindex.jsp',
+	'xyz' :'www.phei.com.cn',
+	'shop1':'http://www.phei.com.cn/module/goods/wssd_index.jsp',
+	'shop2':'http://www.phei.com.cn/module/goods/wssd_index.jsp',
+	
+}
+
+urls_list = [
+	('phei':'http://www.phei.com.cn'),
+	('data':'http://www.phei.com.cn/module/zygl/zxzyindex.jsp'),
+	('xyz' :'www.phei.com.cn'),
+	('shop1':'http://www.phei.com.cn/module/goods/wssd_index.jsp'),
+	('shop2':'http://www.phei.com.cn/module/goods/wssd_index.jsp'),
+	
+]
+
+# [use dic get]
+crawled_urls_for_dic =set() # define empty set
+
+# get list of key from dict with order
+# only use keys() will get keys which sort by random
+# get keys and then use enumerate can get name of key
+# and ind with index
+for ind,name in enumerate(urls_dict.keys()) 
+	name_url = urls_dict[name]
+	if name_url in crawled_urls_for_dict:
+	    print(ind,name,"Already got.")
+	else
+	    try: 
+		res = requests.get(name_url)
+	    except Excption as e:
+		print(ind,name,':',str(e)[0:50])
+		continue
+	content = res.text
+	crawled_urls_for_dict.add(name_url)
+	with open('bydict_'+name+'.html','w',encoding='utf8') as f:
+	    f.write(content)
+	    print("Done:{}{},content length:{}".format(ind,name,len(content)))
+
+for u in crawled_urls_for_dict:
+    print(u)
+
+print('-'*60)
+
+		
