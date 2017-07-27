@@ -52,5 +52,4 @@ for u in crawled_urls_for_dict:
 
 print('-'*60)
 
-		
 
