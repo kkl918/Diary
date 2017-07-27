@@ -7,7 +7,8 @@ https://www.polarxiong.com/archives/Python-%E6%A8%A1%E6%8B%9F%E7%99%BB%E5%BD%95a
 http://slliang.blog.51cto.com/6959776/1783837
 https://www.youtube.com/watch?v=gCd3Fh9w3Do&index=9&list=WL&t=203s
 
-https://www.ptt.cc/bbs/Python/M.1495432336.A.7BF.html
+*https://www.ptt.cc/bbs/Python/M.1495432336.A.7BF.html
+*https://www.ptt.cc/bbs/Python/M.1500988677.A.E90.html
 
 import requests
 from bs4 import BeautifulSoup
