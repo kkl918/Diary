@@ -1,0 +1,31 @@
+http://blog.csdn.net/pleasecallmewhy/article/details/8922826
+https://www.polarxiong.com/archives/Python-%E6%A8%A1%E6%8B%9F%E7%99%BB%E5%BD%95aspx%E7%AB%99%E7%82%B9.html
+http://slliang.blog.51cto.com/6959776/1783837
+https://www.youtube.com/watch?v=gCd3Fh9w3Do&index=9&list=WL&t=203s
+
+https://www.ptt.cc/bbs/Python/M.1495432336.A.7BF.html
+
+import requests
+from bs4 import BeautifulSoup
+
+payload = {
+'__EVENTTARGET':'',
+'__EVENTARGUMENT':'',
+'__VIEWSTATE':'/wEPDwUJMjYxMTk5NzY4D2QWAmYPZBYCAgMPZBYCAgsPZBYOAgEPDxYCHgRUZXh0BRXnlKLlk4Hml6XkuqTmmJPooYzmg4VkZAIHDw8WAh8ABQkxMDYvMDcvMjdkZAIJDw9kFgIeBXN0eWxlBQ1kaXNwbGF5Om5vbmU7ZAILDw8WAh8ABQkxMDYvMDcvMjcWAh8BBQ1kaXNwbGF5Om5vbmU7ZAINDw8WAh8AZWRkAhMPDxYCHwBlZGQCIQ9kFgJmD2QWAgIBD2QWBGYPDxYCHwAFFeeUouWTgeaXpeS6pOaYk+ihjOaDhWRkAgUPFCsAAmRkZBgBBSFjdGwwMCRjb250ZW50UGxhY2VIb2xkZXIkbGlzdFZpZXcPZ2T1oqbRqkWga1acgnyNi+31x9yRwspX8pM6gPjWJh+qAg==',
+'__VIEWSTATEGENERATOR':'A4896558',
+'__EVENTVALIDATION':'/wEdABClQ6l2kHdM7OmXJPPmgchGQlnRBSjq2R0LFBhqvIaYOdWbMM2/DWJrZzd7rAbCDCMbHYsHDbD1wmtGXihvmsnJ8BlZTYOptctvPAnPr9y5LJoyUCbB5OTDc5yZRRQ2PEmkvfJ0YrSiHU+/oXyBv2VhrkJjLitQjF6ePtmGbXiLrIzHLqmP3vmfhBo4iiBYbOAMxUXSePoiAbW03Aek83lEONL/4qBgBPfx/RZlnlGK8F2urMXFZJUEVGioaQEN8wAcw2+N1zwrySGFt1o6Y654NdK0LUPG/u+ZYgXys7Q5MzRmtqZjr7cHdstuZRNzNiosHqM4wINIxgrfpUQJzv9gqj54uhrjUZ7D0yGIf5zv3cUdv4vhSmV+dvfNqmvW3L8=',
+'ctl00$contentPlaceHolder$ucDateScope$rblDateScope':'D',
+'ctl00$contentPlaceHolder$ucSolarLunar$radlSolarLunar':'S',
+'ctl00$contentPlaceHolder$txtSTransDate':'106/07/27',
+'ctl00$contentPlaceHolder$txtETransDate':'106/07/27',
+'ctl00$contentPlaceHolder$txtMarket':'全部市場',
+'ctl00$contentPlaceHolder$hfldMarketNo':'ALL',
+'ctl00$contentPlaceHolder$txtProduct':'全部產品',
+'ctl00$contentPlaceHolder$hfldProductNo':'ALL',
+'ctl00$contentPlaceHolder$hfldProductType':'A',
+'ctl00$contentPlaceHolder$btnXls':'下載Excel',
+}
+
+res  = requests.post('http://amis.afa.gov.tw/fruit/FruitProdDayTransInfo.aspx', data = payload)
+#soup = BeautifulSoup (res.text,'html.parser')
+#print(soup)
