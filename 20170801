@@ -1,1 +1,20 @@
 有趣的爬蟲部落格:http://bhan0507.logdown.com/
+
+res = requests.get('https://www.ptt.cc/bbs/Beauty/index2233.html')
+soup = BeautifulSoup(res.text, 'lxml')
+
+#使用迴圈進入到目標頁面中的每個主題頁面
+
+import os
+import requests 
+from bs4 import BeautifulSoup
+from urllib.request import urlretrieve
+import re
+
+for article in soup.select(r'.nrec span'):
+    if article.text == '爆':
+        article.text == '101'
+        print(article.text)
+    elif article.text != 'X2' and article.text != 'X1' and int(article.text) > 10:
+        print(article.text)
+    
