@@ -1,4 +1,4 @@
-Diary
+#Diary
 Record what I learn everyday
 
 jupyter改黑色主題:
