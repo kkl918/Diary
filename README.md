@@ -1,4 +1,4 @@
-# Diary
+# Setting
 
 jyputer設定主題:  
 
