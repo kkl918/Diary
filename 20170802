@@ -46,3 +46,4 @@ for i in range(len(colors)):
 然而, 在Python語言, 可以直接用for迴圈來跑過list的項目:
 for color in colors:
     print(color)
+
