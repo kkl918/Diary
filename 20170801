@@ -37,16 +37,14 @@ print soup.select('p a[href="http://example.com/elsie"]')
 \#[<a class="sister" href="http://example.com/elsie" id="link1"><!-- Elsie --></a>]
 
 ----------------------------------------------------------------------------------------------------------
-res = requests.get('https://www.ptt.cc/bbs/Beauty/index2233.html')
-soup = BeautifulSoup(res.text, 'lxml')
-
-#使用迴圈進入到目標頁面中的每個主題頁面
-
 import os
 import requests 
 from bs4 import BeautifulSoup
 from urllib.request import urlretrieve
 import re
+
+res = requests.get('https://www.ptt.cc/bbs/Beauty/index2233.html')
+soup = BeautifulSoup(res.text, 'lxml')
 
 for article in soup.select(r'.nrec span'):
     if article.text == '爆':
