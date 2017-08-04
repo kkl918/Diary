@@ -1,0 +1,16 @@
+import requests 
+from bs4 import BeautifulSoup
+from urllib.request import urlretrieve
+import re
+
+## 目標頁面
+#  把網頁原始碼塞進SOUP用lxml解析
+res = requests.get('https://www.ptt.cc/bbs/Beauty/index2240.html')
+soup = BeautifulSoup(res.text, 'lxml')
+popularity = soup.select('.nrec span')
+titles     = soup.select('.r-ent a')
+
+for pop in popularity:
+    print(pop.text)
+    #for title in titles:
+        #print(title.text)
