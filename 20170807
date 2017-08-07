@@ -1,3 +1,5 @@
+WEB : https://github.com/jwlin 爬蟲教學
+-------------------------------------------------------
 import pathlib
 import os
 import requests 
