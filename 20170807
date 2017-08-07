@@ -45,3 +45,27 @@ for page in range(2240,2244):
     else:
         print('Unknown state.')
         break
+-------------------------------------------------------------------------------------------------------------------------
+
+import time
+import pathlib
+import os
+import requests 
+from bs4 import BeautifulSoup
+from urllib.request import urlretrieve
+import re
+import pathlib
+
+path = 'D:/VM_SHARE/PTT/TEST/'
+res = requests.get('https://www.ptt.cc/bbs/Beauty/index2220.html')
+soup = BeautifulSoup(res.text, 'lxml')
+
+for article in soup.select('.r-ent a'):
+    url = 'https://www.ptt.cc' + article['href']
+    res = requests.get(url)
+    soup = BeautifulSoup(res.text, 'lxml')
+    article_name = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——:！<>，。？?、~@#￥%……&*（）]+",'',article.text)  
+    #print(article.text,' ',len(soup.findAll('a', {'href':re.compile('http:\/\/i\.imgur\.com\/.*')})),'\n')
+    #print(article.text,' ',len(soup.findAll('a', {'href':re.compile(r'http://imgur.com/')})),'\n')
+    for index, img_url in enumerate(soup.findAll('a', {'href':re.compile(r'http://imgur.com/.*')})):
+        print(article_name,' ',img_url['href'])
