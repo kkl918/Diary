@@ -1,0 +1,74 @@
+import time
+import pathlib
+import os
+import requests 
+from bs4 import BeautifulSoup
+from urllib.request import urlretrieve
+import re
+import pathlib
+
+path = 'D:/PTT_BEAUTY/'
+a = int(input("Start page:"))
+b   = int(input("End page:"))
+
+for page in range(a,b): 
+    res = requests.get('https://www.ptt.cc/bbs/Beauty/index'+str(page)+'.html')
+    
+    if   res.status_code == 200:
+        print('Load page successed. ',page,' status:',res.status_code)
+        
+        pathlib.Path(path+str(page)).mkdir(parents=True, exist_ok=True) 
+        print('Create folder at: ',path+str(page))
+        soup = BeautifulSoup(res.text, 'lxml')
+        for article in soup.select('.r-ent a'):
+            article_name = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——:！<>，。？?、~@#￥%……&*（）]+",'',article.text)  
+            pathlib.Path(path+str(page)+'/'+article_name).mkdir(parents=True, exist_ok=True)
+
+            url = 'https://www.ptt.cc' + article['href']
+            res = requests.get(url)
+            soup = BeautifulSoup(res.text, 'lxml')
+            type_1 = soup.findAll('a', {'href':re.compile('^https?:\/\/i\.imgur\.com\/.*')}) 
+            type_2 = soup.findAll('a', {'href':re.compile('^https?://imgur.com')})
+            #type_3 = soup.findAll('a', {'href':re.compile('http://m.imgur.com/.*')})
+            i=0
+            if len(type_1) > 0:
+                    for index, img_url in enumerate(type_1):
+                        try:
+                            #if i < 1:
+                                #記得更改想要下載到的位置
+                                urlretrieve(img_url['href'], (path+str(page)+'/'+article_name+'/{}_{}.jpg').format(article_name, index))
+                                print('{} {}_{}.jpg \t 下載成功!'.format(img_url['href'], article_name, index))
+                                time.sleep(0.5)
+                                #i+=1
+                        except:
+                            #if i < 1:
+                                print('{} {}_{}.jpg 下載失敗!'.format(img_url['href'], article_name, index))
+                                #i+=1
+
+            elif len(type_2) > 0:
+                    for index, img_url in enumerate(type_2):
+                        img_url = img_url.text
+                        img_url = img_url[:7] + 'i.' + img_url[7:] + '.jpg'
+                        try:
+                            #if i < 1:
+                                #記得更改想要下載到的位置
+                                urlretrieve(img_url, (path+str(page)+'/'+article_name+'/{}_{}.jpg').format(article_name, index))
+                                print('{} {}_{}.jpg \t 下載成功!'.format(img_url, article_name, index))            
+                                #i+=1
+                        except:
+                            #if i < 1:
+                                print('{} {}_{}.jpg 下載失敗!'.format(img_url, article_name, index))
+                                #i+=1
+            
+    elif res.status_code == 404:
+        print('Load page failed.    ',page,' status:',res.status_code)
+        break
+    elif res.status_code == 500:
+        print('Load page failed.    ',page,' status:',res.status_code)
+        break
+    else:
+        print('Unknown state.')
+        break
+        
+print('Done !')
+os.system('pause')
