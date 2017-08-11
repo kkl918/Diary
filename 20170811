@@ -1,0 +1,10 @@
+def main():
+    print Kerma()
+
+def Kerma():
+    return "energy / mass"    
+
+if __name__ == '__main__':
+    main()
+    
+This allows you to write you code in the order you like as long as you keep calling the function main at the end.
