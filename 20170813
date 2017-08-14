@@ -1,0 +1,59 @@
+import datetime
+import time
+import pathlib
+import os
+import requests 
+from bs4 import BeautifulSoup
+from urllib.request import urlretrieve
+import re
+import pathlib
+
+path = 'D:/PTT_BEAUTY/'
+pathlib.Path(path).mkdir(parents=True, exist_ok=True)
+
+while 1 > 0:
+    url = 'https://www.ptt.cc/bbs/Beauty/index.html'
+    res = requests.get(url)
+    soup = BeautifulSoup(res.text, 'lxml')
+    if   res.status_code == 200:
+
+        print('Load page successed.',datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        for article in soup.select('.r-ent a'):
+            title = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——:！<>，。？?、~@#￥%……&*（）]+",'',article.text)
+            url = 'https://www.ptt.cc' + article['href']  
+
+            if title[:4] != '[公告]':
+
+                if title in os.listdir(path):
+                    pass
+                else:
+                    print(url,'\t',title)
+                    pathlib.Path(path+title).mkdir(parents=True, exist_ok=True)
+                    res = requests.get(url)
+                    soup = BeautifulSoup(res.text, 'lxml')
+                    type_1 = soup.findAll('a', {'href':re.compile('^https?:\/\/i\.imgur\.com\/.*')})
+                    type_2 = soup.findAll('a', {'href':re.compile('^https?://imgur.com')})
+
+                    def img_get(it):
+                            if len(it) > 0:
+                                for index, img_url in enumerate(it):
+
+                                    if img_url.text[0:12] == 'http://imgur':
+                                        img_url = img_url.text
+                                        img_url = img_url[:7] + 'i.' + img_url[7:] + '.jpg'
+                                    else:
+                                        img_url = img_url.text
+
+                                    try:
+                                            urlretrieve(img_url, (path+title+'/{}_{}.jpg').format(title, index))
+                                            print('{} {}_{}.jpg \t 下載成功!'.format(img_url, title, index))
+
+                                    except:
+                                            print('{} {}_{}.jpg 下載失敗!'.format(img_url, title, index))
+                    img_get(type_1)
+                    img_get(type_2)
+                    print('Done.')
+    
+    time.sleep(300)
+#print(os.listdir(path))
+print('Done.')
