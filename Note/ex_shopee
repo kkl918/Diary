@@ -1,0 +1,130 @@
+Learn from : https://www.youtube.com/watch?v=jV6eHoLzD2E&t=263s
+以蝦皮拍賣為例:https://shopee.tw
+到達頁面後選network，F5刷新頁面。
+(1) 看看doc裡面有沒有商品資訊
+(2) doc裡面沒有的話很有可能在XHR裡面，裡面會有一堆連結資訊，開始一一搜尋。
+	通常會包成jason的格式，用preview他會幫你整理好，發現在item裡面
+(3) 切回hreader裡面，用post取得相關資訊，先抓其url放到request.post裡
+                                               這裡↓，要放payload
+	request.post('https://shopee.tw/api/v1/items/', )	
+	之前要送的性質是form，但這次的payload是jason的格式。
+(4) XHR裡items -> Header -> view source，把裡面的東西通通複製
+	code裡import jason
+	jd = jason.loads('{"item_shop_ids":[{"itemid":131449,"adsid":0,"shopid":12290,"campaignid":0},{"itemid":6001094,"adsid":0,"shopid":196610,"campaignid":0},{"itemid":19785078,"adsid":0,"shopid":5435363,"campaignid":0},{"itemid":19146659,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":28166045,"adsid":0,"shopid":5645271,"campaignid":0},{"itemid":30161458,"adsid":0,"shopid":2559226,"campaignid":0},{"itemid":7903371,"adsid":0,"shopid":1975307,"campaignid":0},{"itemid":14641005,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":25083058,"adsid":0,"shopid":3625341,"campaignid":0},{"itemid":2330735,"adsid":0,"shopid":196610,"campaignid":0},{"itemid":10453346,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":15299860,"adsid":0,"shopid":2276618,"campaignid":0},{"itemid":7785967,"adsid":0,"shopid":2431738,"campaignid":0},{"itemid":10462658,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":5359575,"adsid":0,"shopid":1623638,"campaignid":0},{"itemid":13666372,"adsid":0,"shopid":2305697,"campaignid":0},{"itemid":13540440,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":15474884,"adsid":0,"shopid":2276618,"campaignid":0},{"itemid":17314103,"adsid":0,"shopid":943728,"campaignid":0},{"itemid":14664232,"adsid":0,"shopid":482619,"campaignid":0},{"itemid":10461764,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":10453797,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":10454077,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":5398424,"adsid":0,"shopid":118223,"campaignid":0},{"itemid":16768124,"adsid":0,"shopid":2276618,"campaignid":0},{"itemid":13542992,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":5778442,"adsid":0,"shopid":1691271,"campaignid":0},{"itemid":10465207,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":15515314,"adsid":0,"shopid":2276618,"campaignid":0},{"itemid":13541262,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":14483747,"adsid":0,"shopid":118223,"campaignid":0},{"itemid":15745420,"adsid":0,"shopid":1982863,"campaignid":0},{"itemid":10453128,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":10261379,"adsid":0,"shopid":3712151,"campaignid":0},{"itemid":6335951,"adsid":0,"shopid":951839,"campaignid":0},{"itemid":29047156,"adsid":0,"shopid":5435363,"campaignid":0},{"itemid":17075672,"adsid":0,"shopid":3434330,"campaignid":0},{"itemid":10464973,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":10452626,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":3815063,"adsid":0,"shopid":1062184,"campaignid":0},{"itemid":10463648,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":11129400,"adsid":0,"shopid":1221204,"campaignid":0},{"itemid":5595311,"adsid":0,"shopid":118045,"campaignid":0},{"itemid":10454564,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":15512963,"adsid":0,"shopid":2276618,"campaignid":0},{"itemid":29714041,"adsid":0,"shopid":1496302,"campaignid":0},{"itemid":10475257,"adsid":0,"shopid":3434330,"campaignid":0},{"itemid":16710024,"adsid":0,"shopid":4932757,"campaignid":0},{"itemid":15104848,"adsid":0,"shopid":2559226,"campaignid":0},{"itemid":17630376,"adsid":0,"shopid":3448884,"campaignid":0}]}')
+	此時jd會變成python裡的一個字典，然後把payload放 jason =jd
+(5) 測試看看運行狀況，發現跳出<Response [403]>
+	
+
+import jason
+import requests
+
+jd = jason.loads('{"item_shop_ids":[{"itemid":131449,"adsid":0,"shopid":12290,"campaignid":0},{"itemid":6001094,"adsid":0,"shopid":196610,"campaignid":0},{"itemid":19785078,"adsid":0,"shopid":5435363,"campaignid":0},{"itemid":19146659,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":28166045,"adsid":0,"shopid":5645271,"campaignid":0},{"itemid":30161458,"adsid":0,"shopid":2559226,"campaignid":0},{"itemid":7903371,"adsid":0,"shopid":1975307,"campaignid":0},{"itemid":14641005,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":25083058,"adsid":0,"shopid":3625341,"campaignid":0},{"itemid":2330735,"adsid":0,"shopid":196610,"campaignid":0},{"itemid":10453346,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":15299860,"adsid":0,"shopid":2276618,"campaignid":0},{"itemid":7785967,"adsid":0,"shopid":2431738,"campaignid":0},{"itemid":10462658,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":5359575,"adsid":0,"shopid":1623638,"campaignid":0},{"itemid":13666372,"adsid":0,"shopid":2305697,"campaignid":0},{"itemid":13540440,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":15474884,"adsid":0,"shopid":2276618,"campaignid":0},{"itemid":17314103,"adsid":0,"shopid":943728,"campaignid":0},{"itemid":14664232,"adsid":0,"shopid":482619,"campaignid":0},{"itemid":10461764,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":10453797,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":10454077,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":5398424,"adsid":0,"shopid":118223,"campaignid":0},{"itemid":16768124,"adsid":0,"shopid":2276618,"campaignid":0},{"itemid":13542992,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":5778442,"adsid":0,"shopid":1691271,"campaignid":0},{"itemid":10465207,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":15515314,"adsid":0,"shopid":2276618,"campaignid":0},{"itemid":13541262,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":14483747,"adsid":0,"shopid":118223,"campaignid":0},{"itemid":15745420,"adsid":0,"shopid":1982863,"campaignid":0},{"itemid":10453128,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":10261379,"adsid":0,"shopid":3712151,"campaignid":0},{"itemid":6335951,"adsid":0,"shopid":951839,"campaignid":0},{"itemid":29047156,"adsid":0,"shopid":5435363,"campaignid":0},{"itemid":17075672,"adsid":0,"shopid":3434330,"campaignid":0},{"itemid":10464973,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":10452626,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":3815063,"adsid":0,"shopid":1062184,"campaignid":0},{"itemid":10463648,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":11129400,"adsid":0,"shopid":1221204,"campaignid":0},{"itemid":5595311,"adsid":0,"shopid":118045,"campaignid":0},{"itemid":10454564,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":15512963,"adsid":0,"shopid":2276618,"campaignid":0},{"itemid":29714041,"adsid":0,"shopid":1496302,"campaignid":0},{"itemid":10475257,"adsid":0,"shopid":3434330,"campaignid":0},{"itemid":16710024,"adsid":0,"shopid":4932757,"campaignid":0},{"itemid":15104848,"adsid":0,"shopid":2559226,"campaignid":0},{"itemid":17630376,"adsid":0,"shopid":3448884,"campaignid":0}]}')
+
+res = request.post('https://shopee.tw/api/v1/items/', jason=jd)	
+res
+
+(5) 先試著帶入header = user-Agent，在jason=jd後面補一個headers=headers -> 還是403
+(6) 只有header是不夠的，headers裡再加上x-csrftoken	看看能不能解決，還是403
+(7) 把cookie加進去看看可不可以 -> 還是403
+(8) 接著加入Referer，成功!     -> <Response [200]>
+
+import json
+import requests
+
+jd     = json.loads('{"item_shop_ids":[{"itemid":131449,"adsid":0,"shopid":12290,"campaignid":0},{"itemid":6001094,"adsid":0,"shopid":196610,"campaignid":0},{"itemid":19785078,"adsid":0,"shopid":5435363,"campaignid":0},{"itemid":19146659,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":28166045,"adsid":0,"shopid":5645271,"campaignid":0},{"itemid":30161458,"adsid":0,"shopid":2559226,"campaignid":0},{"itemid":7903371,"adsid":0,"shopid":1975307,"campaignid":0},{"itemid":14641005,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":25083058,"adsid":0,"shopid":3625341,"campaignid":0},{"itemid":2330735,"adsid":0,"shopid":196610,"campaignid":0},{"itemid":10453346,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":15299860,"adsid":0,"shopid":2276618,"campaignid":0},{"itemid":7785967,"adsid":0,"shopid":2431738,"campaignid":0},{"itemid":10462658,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":5359575,"adsid":0,"shopid":1623638,"campaignid":0},{"itemid":13666372,"adsid":0,"shopid":2305697,"campaignid":0},{"itemid":13540440,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":15474884,"adsid":0,"shopid":2276618,"campaignid":0},{"itemid":17314103,"adsid":0,"shopid":943728,"campaignid":0},{"itemid":14664232,"adsid":0,"shopid":482619,"campaignid":0},{"itemid":10461764,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":10453797,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":10454077,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":5398424,"adsid":0,"shopid":118223,"campaignid":0},{"itemid":16768124,"adsid":0,"shopid":2276618,"campaignid":0},{"itemid":13542992,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":5778442,"adsid":0,"shopid":1691271,"campaignid":0},{"itemid":10465207,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":15515314,"adsid":0,"shopid":2276618,"campaignid":0},{"itemid":13541262,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":14483747,"adsid":0,"shopid":118223,"campaignid":0},{"itemid":15745420,"adsid":0,"shopid":1982863,"campaignid":0},{"itemid":10453128,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":10261379,"adsid":0,"shopid":3712151,"campaignid":0},{"itemid":6335951,"adsid":0,"shopid":951839,"campaignid":0},{"itemid":29047156,"adsid":0,"shopid":5435363,"campaignid":0},{"itemid":17075672,"adsid":0,"shopid":3434330,"campaignid":0},{"itemid":10464973,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":10452626,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":3815063,"adsid":0,"shopid":1062184,"campaignid":0},{"itemid":10463648,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":11129400,"adsid":0,"shopid":1221204,"campaignid":0},{"itemid":5595311,"adsid":0,"shopid":118045,"campaignid":0},{"itemid":10454564,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":15512963,"adsid":0,"shopid":2276618,"campaignid":0},{"itemid":29714041,"adsid":0,"shopid":1496302,"campaignid":0},{"itemid":10475257,"adsid":0,"shopid":3434330,"campaignid":0},{"itemid":16710024,"adsid":0,"shopid":4932757,"campaignid":0},{"itemid":15104848,"adsid":0,"shopid":2559226,"campaignid":0},{"itemid":17630376,"adsid":0,"shopid":3448884,"campaignid":0}]}')
+headers = {
+    'Referer':'https://shopee.tw/%E6%89%8B%E6%A9%9F%E5%B9%B3%E6%9D%BF%E8%88%87%E5%91%A8%E9%82%8A-cat.70',
+    'Cookie':'SPC_EC=-; SPC_F=UeUzPyWqv122YICHOMxLldfirmVU2lXK; REC_T_ID=cacb4874-3d72-11e7-8e6c-246e960f6720; SPC_T_ID="Fg55HNwWw6uCBMRQuNGyRE6qeHh5J9Y64fC/JsMlruirW8mGcq17LcfxxpST8BGU2HiDD/lS5LBy1rp8FSK2sJ9KX2rfsKLOIo2bk84ES6w="; SPC_T_IV="XA9nK1D6TRDH10Dlyv1RYA=="; csrftoken=sfOQxjt52q5BJTPFTGs8qtULlx6g5KrI; SPC_IA=-1; SPC_U=-; SPC_SC_TK=; UYOMAPJWEMDGJ=; SPC_SC_UD=; _gat=1; _ga=GA1.2.1059437022.1495294888; _gid=GA1.2.123706711.1501476599; SPC_SI=rjgxolpq24ayke2tdckji1yka7zi8gjw',
+    'x-csrftoken':'sfOQxjt52q5BJTPFTGs8qtULlx6g5KrI',
+    'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36',
+}
+res = requests.post('https://shopee.tw/api/v1/items/', json=jd, headers=headers)
+res
+
+(9) 用res.text會跑出原始資訊，改用res.json()
+(10)User-Agent:讓我們像人依樣去瀏覽網頁
+    Referer   :從何處倒過來的資訊
+	那cookie以及x-csrftoken從何而來?
+(11)Headers往後的cookies點開，可以看到cookie的資訊，通常要自己打開瀏覽器去找出來
+(12)使用selenium: 透過程式碼幫我們自動打開一個瀏覽器
+    from selenium import webdriver 
+    driver = webdriver.Chrome()
+	driver.get('https://shopee.tw/')
+	driver.get_cookies()
+	['{}={}'.format(item.get('name'),item.get('value')) for item in driver.get_cookies()]
+(13)使用這個selenium有點麻煩用pip安裝完不知道它裝去哪裡，不會用。跑去官網直接裝執行檔放在D槽
+    driver = webdriver.Chrome("D:\chromedriver.exe")	
+
+from selenium import webdriver 
+#driver = webdriver.Chrome()
+driver = webdriver.Chrome("D:\chromedriver.exe")
+driver.get('https://shopee.tw/')
+driver.get_cookies()
+['{}={}'.format(item.get('name'),item.get('value')) for item in driver.get_cookies()]
+
+(14)selenium in Ubuntu:sudo apt-get install chromium-chromedriver
+
+from selenium import webdriver 
+driver = webdriver.Chrome("/usr/lib/chromium-browser/chromedriver")
+driver.get('https://shopee.tw/')
+driver.get_cookies()
+['{}={}'.format(item.get('name'),item.get('value')) for item in driver.get_cookies()]
+
+(15)關於['{}={}'.format(item.get('name'),item.get('value')) for item in driver.get_cookies()]
+	driver.get()可以得到json格式的cookie，如何把它組成我在header裡看到的樣子?以至於我可以用來存取我的頁面?
+	(a) 先用for item in driver.get():在前方加入item.get('name')
+	    item.get('name')for item in driver.get():
+	    就這個地方來說我來必須把它的value串起來，怎麼串呢?
+	    它的格式是name = value; -> 名字 等於 值 分號 的形式，用分號當作分隔
+	    item.get('name'), item.get('value')for item in driver.get():
+	    把它組成字串
+	    '{}={}'format(item.get('name'), item.get('value'))
+	    再把這樣的結果放到list中[]，變成
+	    ['{}={}'format(item.get('name'), item.get('value'))]
+		再利用 ';'.join 把它組合再一起
+		';'.join(['{}={}'format(item.get('name'), item.get('value'))])
+		到這一步，我們就產生了所謂的cookie
+		cookie = ';'.join(['{}={}'format(item.get('name'), item.get('value'))])
+	(b) 關於 csrftoken: 先叫出driver.get_cookies()，這邊我們必須找到csrftoken
+		所以當我們的name = csrftoken的時候再把 value 叫出來
+		[item.get('value') for item in driver.get_cookies() if item.get('name') == 'csrftoken']
+
+**  'method' object is not iterable
+**                                                    這裡↓，少了()的話就會出現此錯誤
+**	錯誤:[item.get('value') for item in driver.get_cookies   if item.get('name') == 'csrftoken']
+**	正確:[item.get('value') for item in driver.get_cookies() if item.get('name') == 'csrftoken']
+
+
+# shopee_final
+from selenium import webdriver 
+#driver = webdriver.Chrome()
+driver = webdriver.Chrome("D:\chromedriver.exe")
+driver.get('https://shopee.tw/')
+
+#driver.get_cookies() 
+
+#['{}={}'.format(item.get('name'), item.get('value'))for item in driver.get_cookies()]
+
+c = ';'.join(['{}={}'.format(item.get('name'), item.get('value'))for item in driver.get_cookies()])
+#print(c)
+
+#[item.get('value') for item in driver.get_cookies() if item.get('name') == 'csrftoken']
+token = [item.get('value') for item in driver.get_cookies() if item.get('name') == 'csrftoken'][0]
+
+import json
+import requests
+
+jd     = json.loads('{"item_shop_ids":[{"itemid":131449,"adsid":0,"shopid":12290,"campaignid":0},{"itemid":6001094,"adsid":0,"shopid":196610,"campaignid":0},{"itemid":19785078,"adsid":0,"shopid":5435363,"campaignid":0},{"itemid":19146659,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":28166045,"adsid":0,"shopid":5645271,"campaignid":0},{"itemid":30161458,"adsid":0,"shopid":2559226,"campaignid":0},{"itemid":7903371,"adsid":0,"shopid":1975307,"campaignid":0},{"itemid":14641005,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":25083058,"adsid":0,"shopid":3625341,"campaignid":0},{"itemid":2330735,"adsid":0,"shopid":196610,"campaignid":0},{"itemid":10453346,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":15299860,"adsid":0,"shopid":2276618,"campaignid":0},{"itemid":7785967,"adsid":0,"shopid":2431738,"campaignid":0},{"itemid":10462658,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":5359575,"adsid":0,"shopid":1623638,"campaignid":0},{"itemid":13666372,"adsid":0,"shopid":2305697,"campaignid":0},{"itemid":13540440,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":15474884,"adsid":0,"shopid":2276618,"campaignid":0},{"itemid":17314103,"adsid":0,"shopid":943728,"campaignid":0},{"itemid":14664232,"adsid":0,"shopid":482619,"campaignid":0},{"itemid":10461764,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":10453797,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":10454077,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":5398424,"adsid":0,"shopid":118223,"campaignid":0},{"itemid":16768124,"adsid":0,"shopid":2276618,"campaignid":0},{"itemid":13542992,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":5778442,"adsid":0,"shopid":1691271,"campaignid":0},{"itemid":10465207,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":15515314,"adsid":0,"shopid":2276618,"campaignid":0},{"itemid":13541262,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":14483747,"adsid":0,"shopid":118223,"campaignid":0},{"itemid":15745420,"adsid":0,"shopid":1982863,"campaignid":0},{"itemid":10453128,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":10261379,"adsid":0,"shopid":3712151,"campaignid":0},{"itemid":6335951,"adsid":0,"shopid":951839,"campaignid":0},{"itemid":29047156,"adsid":0,"shopid":5435363,"campaignid":0},{"itemid":17075672,"adsid":0,"shopid":3434330,"campaignid":0},{"itemid":10464973,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":10452626,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":3815063,"adsid":0,"shopid":1062184,"campaignid":0},{"itemid":10463648,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":11129400,"adsid":0,"shopid":1221204,"campaignid":0},{"itemid":5595311,"adsid":0,"shopid":118045,"campaignid":0},{"itemid":10454564,"adsid":0,"shopid":2698155,"campaignid":0},{"itemid":15512963,"adsid":0,"shopid":2276618,"campaignid":0},{"itemid":29714041,"adsid":0,"shopid":1496302,"campaignid":0},{"itemid":10475257,"adsid":0,"shopid":3434330,"campaignid":0},{"itemid":16710024,"adsid":0,"shopid":4932757,"campaignid":0},{"itemid":15104848,"adsid":0,"shopid":2559226,"campaignid":0},{"itemid":17630376,"adsid":0,"shopid":3448884,"campaignid":0}]}')
+headers = {
+    'Referer':'https://shopee.tw/%E6%89%8B%E6%A9%9F%E5%B9%B3%E6%9D%BF%E8%88%87%E5%91%A8%E9%82%8A-cat.70',
+    'Cookie': c,
+    'x-csrftoken': token,
+    'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36',
+}
+res = requests.post('https://shopee.tw/api/v1/items/', json=jd, headers=headers)
+#res
+#res.json()
+
+import pandas
+df = pandas.DataFrame(res.json())
+df
