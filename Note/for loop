@@ -1,0 +1,7 @@
+用C語言的思維, 你可能會寫這樣:
+for i in range(len(colors)):
+    print(colors[i])
+
+然而, 在Python語言, 可以直接用for迴圈來跑過list的項目:
+for color in colors:
+    print(color)
