@@ -15,8 +15,14 @@ jyputer設定主題:
 1. sudo apt-get install openssh-server
 2. sudo service ssh status
 3. sudo nano /etc/ssh/sshd_config
-4. 消 root 的登入權限
-
-這是基於安全的考量， 一般都不會設定讓 root 可以連進來， 不然，駭客就會很方便的哩 ！ 首先，打開在 /etc/ssh/sshd_config 的 SSH 設定檔，然後，找到下面這一行，把它的 yes 改成 no 之後，就把它存檔起來。＃PermitRootLogin Yes 
-
+4. cancel login of root 
+   sudo vim /etc/ssh/sshd_config (1)#PermitRootLogin Yes (2)Port 1137 -> optional 
+5. /etc/hosts.allow sshd:192.168.1.88:allow -> optional
+   /etc/hosts.deny  sshd:all:deny -> optional
+6. sudo /etc/init.d/ssh restart
 Read more: http://www.arthurtoday.com/2010/08/ubuntu-ssh.html#ixzz4qXJ3wKDV
+
+# GIT
+1. sudo apt install git
+2. git config --global user.name "Your Name"
+3. git config --global user.email "youremail@domain.com"
