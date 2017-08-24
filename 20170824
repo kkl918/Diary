@@ -1,0 +1,23 @@
+#include<stdio.h>
+#include<string.h>
+#define MAXLINE 1000
+
+int getline(char *line, int max);
+
+main(int argc, char *argv[]) {
+	char *s = "01\n23\n45\n67\n89\n";
+	printf("s:\n%s\n",s);
+	printf("c:%c\n",*++s);
+	printf("%d",getline(s, 1000));
+	
+}
+
+
+int getline(char *s, int max){
+	int i=0, j=0;
+	while(i< max-1 && *s++ != EOF)
+		i++;
+		if(*s == '\n')
+			j++;
+	return i;
+}
