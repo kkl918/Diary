@@ -15,7 +15,7 @@ jyputer設定主題:
 1. sudo apt-get install openssh-server
 2. sudo service ssh status
 3. sudo nano /etc/ssh/sshd_config
-4. cancel login of root 
+4. cancel login of root<br /> 
    sudo vim /etc/ssh/sshd_config <br /> 
     (1)#PermitRootLogin Yes <br /> 
     (2)Port 1137 -> optional 
