@@ -16,7 +16,9 @@ jyputer設定主題:
 2. sudo service ssh status
 3. sudo nano /etc/ssh/sshd_config
 4. cancel login of root 
-   sudo vim /etc/ssh/sshd_config (1)#PermitRootLogin Yes (2)Port 1137 -> optional 
+   sudo vim /etc/ssh/sshd_config 
+    (1)#PermitRootLogin Yes 
+    (2)Port 1137 -> optional 
 5. /etc/hosts.allow sshd:192.168.1.88:allow -> optional<br /> 
    /etc/hosts.deny  sshd:all:deny -> optional
 6. sudo /etc/init.d/ssh restart
