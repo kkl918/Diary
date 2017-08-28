@@ -1,0 +1,35 @@
+RasPi 3 安裝
+1.下載OS, ubuntu-mate-16.04.2-desktop-armhf-raspberry-pi.img 副檔名xz
+2.解壓縮, ubuntu-mate-16.04.2-desktop-armhf-raspberry-pi     副檔名img
+3.格式化記憶卡, SD_CardFormatter
+4.Win 32 Disk Imager 
+5.擴張 Ubuntu MATE 的檔案系統
+  sudo fdisk /dev/mmcblk0 
+  
+  輸入以上指令已後會出現一些選項，按照順序選擇，d->2，之後，輸入
+  N->P->2->Enter->Enter->w
+  然後在Terminal輸入以下指令
+  sudo reboot
+  sudo resize2fs /dev/mmcblk0p2
+6.apt-get update
+  dpkg --configure -a
+  apt-get dist-upgrade
+  apt-get -f install
+7.[FAILED] Failed to start Load Kernel Modules
+  sudo systemctl status systemd-modules-load.service
+  sudo passwd 設定ROOT密碼
+  cd /etc/modules-load.d/cups-filters.conf
+  su
+  vim cups-filters.conf
+  reboot 
+8.sudoapt-get install vnc4server
+  vncserver啟動VNC server
+  在Windows桌面使用VNC view登錄樹莓派，登錄IP位址為樹莓派ip:1。登錄發現，並沒有啟動X桌面。
+  啟動VNC服務時將自動創建"~/.vnc/xstartup" 文件，需要修改這個配置文件。
+  將unset SESSION_MANAGER 和exec /etc/X11/xinit/xinitrc前面的注釋#去掉，
+  注釋掉x-window-manger，添加mate-session&
+
+
+  
+  
+  
