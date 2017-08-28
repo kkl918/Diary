@@ -19,7 +19,7 @@ RasPi 3 安裝
   sudo systemctl status systemd-modules-load.service
   sudo passwd 設定ROOT密碼
   cd /etc/modules-load.d/cups-filters.conf
-  su
+  su -l
   vim cups-filters.conf
   reboot 
 8.sudoapt-get install vnc4server
@@ -30,6 +30,6 @@ RasPi 3 安裝
   注釋掉x-window-manger，添加mate-session&
 
 
-  
-  
-  
+  https://kknews.cc/zh-tw/tech/qeqrqrg.html
+  http://www.waveshare.com/wiki/3.5inch_RPi_LCD_(B)
+  https://sourceforge.net/projects/win32diskimager/
