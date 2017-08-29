@@ -1,0 +1,7 @@
+#include<stdio.h>
+
+int main(int argc, char *argv[]){
+	printf("(1) *++argv : %s\n",*++argv);
+	printf("(2) *++argv : %s\n",*++argv);
+	printf("(3) *argv : %s\n",*argv);
+} 
