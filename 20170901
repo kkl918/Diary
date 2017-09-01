@@ -1,0 +1,9 @@
+#include<stdio.h> 
+
+int main(){
+	char *ptr[] = { "-a","-b" };
+	printf("%s\n", ptr[1]);
+	printf("%c\n",*ptr[1]);
+	printf("%c\n",*(ptr[1]+1));
+}
+
