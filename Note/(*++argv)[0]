@@ -9,3 +9,21 @@
 
 指针数组作为函数参数时，函数将其作为指向指针的指针处理，因此可以自增
 而自定义的指针数组实质还是数组，对数组名自增运算是非法的
+
+char *buf_char[] = {"-a", "-b", "-c", "-d", "-e"};
+
+1.如何用指針打印數組? 得到輸出:-a-b-c-d-e
+2.如何只打印第二位? 得到輸出:abcde 
+
+2.int main(){
+
+	char *buf_char[] = {"-a", "-b", "-c", "-d", "-e"};
+	char **p = buf_char;
+	int  argc = sizeof(buf_char) / sizeof(buf_char[0]);
+
+	while(argc-- >0)
+		printf("%c ", (*p++)[1]);	
+		
+  }
+
+
