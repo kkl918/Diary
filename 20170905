@@ -1,0 +1,31 @@
+#include <stdio.h>
+
+void swap(void *v[], int, int);
+
+int main(){
+	int i, left=0, right=10;
+	int  buf_int[] = {10,9,8,7,6,5,4,3,2,1,0};
+    int *ptr = buf_int;
+    
+    for(; *ptr != '\0';ptr++)
+		printf("%d ",*ptr);	
+	printf("\n");
+	
+}
+
+-------------------------------------------------------------------------
+
+#include <stdio.h>
+
+void swap(void *v[], int, int);
+
+int main(){
+
+	char *buf_char[] = {"-a", "-b", "-c", "-d", "-e"};
+	char **p = buf_char;
+	int  argc = sizeof(buf_char) / sizeof(buf_char[0]);
+
+	while(argc-- >0)
+		printf("%s ", *p++);	
+		
+}
