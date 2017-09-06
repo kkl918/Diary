@@ -31,15 +31,26 @@ Read more: http://www.arthurtoday.com/2010/08/ubuntu-ssh.html#ixzz4qXJ3wKDV
 
 # VIMRC
 set nu
+
 set ai
+
 set tabstop=4
+
 set shiftwidth=4
+
 inoremap ( ()<Esc>i
+
 inoremap " ""<Esc>i
+
 inoremap ' ''<Esc>i
+
 inoremap [ []<Esc>i
+
 inoremap { {}<Esc>i
+
 inoremap {<CR> {<CR>}<Esc>ko
+
 inoremap {{ {}<ESC>i
+
 filetype indent on
 
