@@ -1,3 +1,6 @@
+# md 換行
+句尾兩個空格=換行
+
 # Setting
 
 jyputer設定主題:  
