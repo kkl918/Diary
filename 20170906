@@ -7,22 +7,21 @@ int numcpy(char *s1, char *s2);
 int main(){
 	int i, left=0, right=9;
 	
-	char *buf_char[] = {"10","9","8","7","6","5","4","3","2","1","0"};
+	char *buf_char[] = {"9","8","7","6","5","4","3","2","1","0"};
 	char **p = buf_char;
 	int  const arg = sizeof(buf_char) / sizeof(buf_char[0]);
     int  argc = arg;
     
-//	while(argc-- > 0)
-//		printf("%s ", *p++);	
-	
-	// 此時*P已經被指到後面去了 ， 
-	// 初始交換 
 	swap((void **)buf_char, 0, (left+right)/2);
 	
 	int last = left;
 	for(i=left+1; i<=right; i++)
 		if(numcpy(buf_char[i],buf_char[left])<0)
 			swap((void**)buf_char,++last,i);
+
+
+	//swap((void**)buf_char,left,last);
+
 
 	while(argc-- > 0)
 		printf("%s ", *p++);	
@@ -46,3 +45,6 @@ int numcpy(char *s1, char *s2){
 	else
 		return 0;
 }
+
+
+
