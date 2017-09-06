@@ -1,0 +1,68 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void s_line();
+void print(void *v[], int);
+void swap (void *v[], int, int);
+int numcpy(char *s1, char *s2);
+
+	
+char *buf_char[] = {"9","8","7","6","5","4","3","2","1","0"};
+char **p = buf_char;
+int  const argc = sizeof(buf_char) / sizeof(buf_char[0]);
+
+int main(){
+	int i, left=0, right=argc;
+
+}
+
+void qsort(void *v[], int left, int right, int (*comp)(void *,void*)){
+	int i, last;
+	if(left <= right)
+		return ;
+	swap(v, left, (left+right)/2);
+	int last = left;
+	for(i=left+1; i<=right; i++)
+		if(numcpy(buf_char[i],buf_char[left])<0){
+			swap((void**)buf_char,++last,i);
+			print((void **)buf_char, argc);
+		}
+		
+	swap(v,left,last);
+	qsort(v, left,   right, comp);
+	qsort(v, last+1, right, comp);	
+}
+
+void swap(void *v[], int i, int j){
+	void *temp;
+	temp = v[i];
+	v[i] = v[j];
+	v[j] = temp;
+}
+
+int numcpy(char *s1, char *s2){
+	double v1, v2;
+	v1 = atof(s1);
+	v2 = atof(s2);
+	if(v1<v2)
+		return -1;
+	else if (v1>v2)
+		return 1;
+	else
+		return 0;
+}
+
+void print(void *v[], int argc){
+		
+	while(argc-- > 0){
+		printf("%s ", *v++);
+	}
+			
+	printf("\n");
+}
+
+int getline(char *, int){
+	;
+}
+
+void s_line(){
