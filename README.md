@@ -30,8 +30,8 @@ Read more: http://www.arthurtoday.com/2010/08/ubuntu-ssh.html#ixzz4qXJ3wKDV
 3. git config --global user.email "youremail@domain.com"
 
 # VIMRC
-set nu
-set ai
+set nu  
+set ai  
 set tabstop=4
 set shiftwidth=4
 inoremap ( ()<Esc>i
