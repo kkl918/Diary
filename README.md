@@ -29,7 +29,7 @@ Read more: http://www.arthurtoday.com/2010/08/ubuntu-ssh.html#ixzz4qXJ3wKDV
 2. git config --global user.name "Your Name"
 3. git config --global user.email "youremail@domain.com"
 
-# VIMRC
+# vim .vimrc
 set nu  
 set ai  
 set tabstop=4  
