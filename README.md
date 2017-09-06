@@ -28,3 +28,18 @@ Read more: http://www.arthurtoday.com/2010/08/ubuntu-ssh.html#ixzz4qXJ3wKDV
 1. sudo apt install git
 2. git config --global user.name "Your Name"
 3. git config --global user.email "youremail@domain.com"
+
+# VIMRC
+set nu
+set ai
+set tabstop=4
+set shiftwidth=4
+inoremap ( ()<Esc>i
+inoremap " ""<Esc>i
+inoremap ' ''<Esc>i
+inoremap [ []<Esc>i
+inoremap { {}<Esc>i
+inoremap {<CR> {<CR>}<Esc>ko
+inoremap {{ {}<ESC>i
+filetype indent on
+
