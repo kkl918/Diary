@@ -46,3 +46,6 @@ inoremap {<CR> {<CR>}<Esc>ko
 inoremap {{ {}<ESC>i  
 filetype indent on  
 
+# notepad tab makes python reeor
+Chinese UI : 設定 -> 使用者設定 -> 程式語言 -> 打勾"以空格取代"
+Englisg UI : setting -> pregerences -> language -> mark "replace by space"
