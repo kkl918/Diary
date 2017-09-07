@@ -1,36 +1,44 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void s_line();
+void line();
 void print(void *v[], int);
 void swap (void *v[], int, int);
 int numcpy(char *s1, char *s2);
-
+void qsort(void *v[], int left, int right, int (*comp)(void *,void*));
 	
-char *buf_char[] = {"9","8","7","6","5","4","3","2","1","0"};
-char **p = buf_char;
-int  const argc = sizeof(buf_char) / sizeof(buf_char[0]);
+
 
 int main(){
+	char *buf_char[] = {"9","8","7","6","5","4","3","2","1","0"};
+	char **p = buf_char;
+	int  const argc = sizeof(buf_char) / sizeof(buf_char[0]);
 	int i, left=0, right=argc;
-
+	
+	print((void**)buf_char,argc);
+	line();
+	
+	qsort((void**)buf_char, 0, right-1,(int(*)(void*,void*))(numcpy));
+	
+	print((void**)buf_char,argc);
 }
 
 void qsort(void *v[], int left, int right, int (*comp)(void *,void*)){
 	int i, last;
-	if(left <= right)
+	void swap(void*[], int, int);
+	if(left >= right)
 		return ;
 	swap(v, left, (left+right)/2);
-	int last = left;
-	for(i=left+1; i<=right; i++)
-		if(numcpy(buf_char[i],buf_char[left])<0){
-			swap((void**)buf_char,++last,i);
-			print((void **)buf_char, argc);
+	
+	//line();
+	last = left;
+	for(i =left+1; i<=right; i++)
+		if( (*comp)(v[i],v[left]) < 0 ){
+			swap(v, ++last, i);	
 		}
-		
 	swap(v,left,last);
-	qsort(v, left,   right, comp);
-	qsort(v, last+1, right, comp);	
+	qsort(v, left,   last-1, comp);
+	qsort(v, last+1, right , comp);	
 }
 
 void swap(void *v[], int i, int j){
@@ -65,4 +73,6 @@ int getline(char *, int){
 	;
 }
 
-void s_line(){
+void line(){
+	printf("------------------------------\n");
+}
