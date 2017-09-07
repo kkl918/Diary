@@ -1,0 +1,25 @@
+https://blog.gtwang.org/linux/linux-send-mail-command-using-ssmtp-and-gmail/
+
+1. sudo apt-get install ssmtp mailutils
+
+2. sudo cp /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.default
+
+3. sudi -i
+
+4. vim /etc/ssmtp/ssmtp.conf
+------------------------------
+root=kakinglin@gmail.com
+mailhub=smtp.gmail.com:587
+hostname=kk
+FromLineOverride=YES
+AuthUser=kakinglin@gmail.com
+AuthPass=**********
+UseSTARTTLS=YES
+UseTLS=YES
+Debug=YES
+------------------------------
+gmail要另外設定成可以接受以應用程式的方式登入
+在 Google 登入和安全性的網頁中，選擇「應用程式密碼」。
+
+5. echo "This is a test" | ssmtp recipient@your.domain.com
+
