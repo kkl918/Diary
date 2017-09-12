@@ -6,9 +6,10 @@ void print(void *v[], int);
 void swap (void *v[], int, int);
 void qsort(void *v[], int left, int right, int (*comp)(void *,void*));
 void writeline(char *s[], int nline);
+void strcpy(char *s, char *t);
 
 int numcpy(char *s1, char *s2);
-int getline(char s[], int max);
+int getline(char *, int max);
 int readline(char *s[], int max);
 
 char *alloc(int n);
@@ -18,16 +19,9 @@ char *alloc(int n);
 static char allocbuf[ALLOCSIZE];
 static char *allocp = allocbuf;
 
-char *buf[MAX];
+char *buf[MAX], *test[] = {"a","-b","-c"};
 
 int main(){
-	int i, left=0, nline;
-
-	if((nline = readline(buf, MAX)) >= 0){
-		qsort((void**)buf, 0, nline-1,(int(*)(void*,void*))(numcpy));
-		writeline(buf,  nline);
-		return 0;	
-	}
 
 }
 
@@ -83,51 +77,47 @@ int numcpy(char *s1, char *s2){
 		return 0;
 }
 
-int strcpy(char *s, char *t){
-	for( ;*s == *t; s++, t++)
-		if(*s == '\0')
-			return 0;
-	return *s - *t;
+void strcpy(char *s, char *t){
+	while(*s++ == *t++);
 }
 
-int getline(char s[], int max){
+int getline(char *s, int max){
 	int i, c;
 	
 	char *p;
 	
 	for(i=0; i<max-1 && (c = getchar()) != EOF && c != '\n'; i++)
-		s[i] = c;
+		*s++ = c;
 	
 	if(c == '\n'){
-		s[i] == c;
-		++i;
+		*s == c;
+		i++;
 	}
 	
-	s[i] = '\0';
+	*++s = '\0';
 	
 	return i;
 }
 
 int readline(char *s[], int max){
-	int len , nline=0;
+	int len, nline=0;
 	char *p, line[max];
-	while(len = getline(line, max)){
+	while(getline(line, max) > 0)
 		if(nline >= max || (p = alloc(len)) == NULL)
 			return -1;
-		else
+		else {
 			line[len-1] == '\0';
 			strcpy(p, line);
 			s[nline++] = p; // 把標頭放到指針數組裡 
-			
+		}
 	return nline;
-	}
+
 }
 
 void writeline(char *s[], int nline){
 	while(nline-- > 0)
 		printf("%s\n", *s++);
 }
-
 
 char *alloc(int n){
 	if(allocbuf + ALLOCSIZE - allocp >= n){
@@ -136,5 +126,6 @@ char *alloc(int n){
 	} else
 		return 0;
 }
+
 
 
