@@ -1,0 +1,31 @@
+#include<stdio.h>
+#include<math.h>
+
+	struct point {
+		int x; 
+		int y;
+
+	};
+	point pt = {3,4};
+	
+	struct rect {
+		struct point pt1 = {1,2};
+		struct point pt2 = {3,4};
+	};
+	
+	struct rect screen;
+
+int main(){
+	
+	
+	printf("%d %d", pt.x, pt.y);
+	
+	double dist, sqrt(double);
+	dist = sqrt((double)pt.x*pt.x + (double)pt.y*pt.y);
+	printf(" D:%.2f",dist);
+	
+	
+	
+	printf("\n%d %d",screen.pt1.x,screen.pt1.y);
+
+} 
