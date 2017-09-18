@@ -8,7 +8,7 @@ TEXT = 'Here is a message from python.'
 
 # Gmail Sign In
 gmail_sender = 'kakinglin@gmail.com'
-gmail_passwd = 'bpvfswzcogzdvtil'
+gmail_passwd = '*************'
 
 server = smtplib.SMTP('smtp.gmail.com', 587)
 server.ehlo()
