@@ -1,0 +1,45 @@
+C/C++ 箭頭(->) 、點(.)、雙冒號(::) 用法
+箭頭(->)與點(.)
+1. in C++ Struct:
+struct MyStruct {
+  int member_a;
+};
+1.1 如果有變數 MyStruct s，對其中成員的取用為：
+MyStruct s;
+s.member_a = 1;
+1.2 如果採用指標方法存取MyStruct * ps，相對的存取方式必須使用箭頭：
+MyStruct * ps;
+ps->member_a = 1;
+
+2. in C++ Class
+class MyClass {
+  public:
+  int ca_var;
+  int add(int a);
+};
+當宣告為一般型態時 MyClass CA，就使用點(.)來存取Class中的成員：
+MyClass CA;
+CA.add(0);       // 左邊為 Class變數
+當宣告為指標型態時 MyClass * CA，就使用箭頭(->)來存取Class中的成員：
+MyClass * pCA;
+pCA->add(0);    // 左邊為 Class指標
+
+雙冒號(::)
+雙冒號(::)只用在Class成員函式或Class成員變數中：
+class MyClass {
+  public:
+  int ca_var;
+  int add(int a);
+  int add(int a, int b);
+};
+在add()這個函式時必須這樣描述：
+int MyClass::add(int a, int b)
+{
+  return a + b;
+}
+此外，雙冒號也常常使用在當前Class內部，對目前Class內部變數元素進行表示：
+int MyClass::add(int a)
+{
+  return a + ::ca_var;
+}
+用於表示目前Class的內部變量ca_var。
