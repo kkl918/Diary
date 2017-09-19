@@ -1,0 +1,19 @@
+#include <stdio.h>
+
+int b = 2;
+
+void func(int *p){
+	 p = &b;
+}
+
+int main(){
+	int a = 1, c = 3;
+	int *ptrA = &a;
+	printf("*ptrA : %d\n", *ptrA);
+	
+	func(ptrA);
+	
+	printf("After func, *ptrA : %d\n", *ptrA);
+	
+	return 0;
+}
