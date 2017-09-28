@@ -1,0 +1,18 @@
+#include <stdio.h>
+
+int main(){
+
+	struct point{
+		int x;
+		int y;
+	}p;
+	p.x =3;
+	
+	struct rect {
+		struct point pt1;
+		struct point pt2;
+	}r;
+	
+	//struct point pt = {30,40};	
+	//printf("%d", p.x);
+} 
