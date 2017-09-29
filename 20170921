@@ -1,0 +1,5 @@
+#include <stdio.h>
+
+int main(){
+	printf("int:%d, char:%d", sizeof(int), sizeof(char));
+}
