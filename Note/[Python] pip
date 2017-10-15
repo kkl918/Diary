@@ -1,0 +1,38 @@
+Python 常會使用 PIP 來安裝相關套件, 來紀錄些 Debian / Ubuntu Linux 的 PIP 系統環境等資訊.
+
+
+安裝 PIP 來管理 Python Packages
+
+PIP: A tool for installing and managing Python packages.
+
+Debian / Ubuntu Linux 安裝 PIP
+
+apt-get install python-pip
+PIP 於系統所在位置
+
+PIP 會將套件安裝於: /usr/local/lib/python2.7/dist-packages/ # 所以安裝需要 sudo
+若安裝時有錯誤發生, ex: 權限不足, 會將 Log 寫於: /home/user/.pip/pip.log
+PIP 操作命令
+
+pip list # 看目前系統有安裝哪些套件
+pip search mysql # 搜尋相關套件
+pip install package # 安裝套件
+pip uninstall package # 移除套件
+pip show --files package # 秀套件檔案列表
+pip list --outdated # 列出過期套件
+pip install --upgrade package # 升級
+相關參數
+
+install: Install packages.
+uninstall: Uninstall packages.
+freeze: Output installed packages in requirements format.
+list: List installed packages.
+show: Show information about installed packages.
+search: Search PyPI for packages.
+wheel: Build wheels from your requirements.
+help: Show help for commands.
+假設要安裝 hipchat library
+
+Source: https://github.com/kurttheviking/python-simple-hipchat
+$ sudo pip install python-simple-hipchat # 或 sudo pip install https://github.com/kurttheviking/python-simple-hipchat
+會安裝到: /usr/local/lib/python2.7/dist-packages/hipchat
