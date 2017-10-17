@@ -1,0 +1,5 @@
+ requirement.txt 生成
+ 
+ (1) pip freeze > ./requirements.txt
+ (2) pip list, cat ./requirements.txt
+ (3) pip install -r path/requirements.txt 
