@@ -10,7 +10,7 @@ sender = 'kakinglin@gmail.com'
 receivers = 'kakinglin@gmail.com'  
 
 gmail_sender = 'kakinglin@gmail.com'
-gmail_passwd = 'bpvfswzcogzdvtil'
+gmail_passwd = '*************'
 
 server = smtplib.SMTP('smtp.gmail.com', 587)
 server.ehlo()
