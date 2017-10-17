@@ -1,0 +1,46 @@
+#!/usr/bin/python3
+ 
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.header import Header
+
+
+sender = 'kakinglin@gmail.com'
+receivers = 'kakinglin@gmail.com'  
+
+gmail_sender = 'kakinglin@gmail.com'
+gmail_passwd = '**********'
+
+server = smtplib.SMTP('smtp.gmail.com', 587)
+server.ehlo()
+server.starttls()
+server.login(gmail_sender, gmail_passwd)
+
+#標題、內文
+subject = 'title'
+content = 'content'
+
+#创建一个带附件的实例
+message = MIMEMultipart()
+message['From'] = Header("kk", 'utf-8')
+message['To'] =  Header("Roro", 'utf-8')
+message['Subject'] = Header(subject, 'utf-8')
+ 
+#邮件正文内容
+message.attach(MIMEText(content, 'plain', 'utf-8'))
+ 
+# 附件，目录下的 .dat 文件
+filename = '00011771.dat'
+attach = MIMEText(open(r'C:\Users\Roy\Desktop\test\\'+ filename, 'rb').read(), 'base64', 'utf-8')
+attach["Content-Type"] = 'application/octet-stream'
+attach["Content-Disposition"] = 'attachment; filename='+ filename
+message.attach(attach)
+
+
+
+try:
+    server.sendmail(sender, receivers, message.as_string())
+    print ("邮件发送成功")
+except smtplib.SMTPException:
+    print ("Error: 无法发送邮件")
