@@ -71,3 +71,4 @@ for dat in range(1,len(dats)):
     
 # 重新啟動
 requests.post(url_rebt, data = {'REBOOT':'TRUE'})
+
