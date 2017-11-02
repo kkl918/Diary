@@ -1,0 +1,32 @@
+sudo apt-get install libstdc++6
+conda install libgcc
+
+import wx
+class Frame(wx.Frame):
+	def __init__(self):
+		wx.Frame.__init__(self,None,-1,"EX",size=(300,300))
+		panel = wx.Panel(self,-1)
+		wx.StaticText(panel,-1,"POS:",pos=(10,12))
+		self.posCtrl  = wx.TextCtrl(panel,-1,"",pos=(40,10))
+		self.btnClick = wx.Button(panel,-1,label="click",pos=(50,50),size=(50,30))
+		self.btnEnd   = wx.Button(panel,-1,label="End"  ,pos=(100,50),size=(50,30))
+		panel.Bind(wx.EVT_MOTION,self.Move)
+		self.Bind(wx.EVT_BUTTON, self.f, self.btnClick)
+		self.Bind(wx.EVT_BUTTON, self.EndMe, self.btnEnd)
+		
+	def Move(self, event):
+		pos = event.GetPosition()
+		self.posCtrl.SetValue("%s, %s" % (pos.x, pos.y))
+	
+	def f(self, event):
+		self.posCtrl.SetValue("Button Click")
+		
+	def EndMe(self, event):
+		self.Destroy()
+		
+		
+if __name__ == '__main__':
+	app   = wx.App()
+	frame = Frame()
+	frame.Show()
+	app.MainLoop()
