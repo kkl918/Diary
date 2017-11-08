@@ -1,0 +1,47 @@
+import wx, send
+class Frame(wx.Frame):
+	def __init__(self):
+		#----------------|不太用動到   |標題 | 視窗大小    				  
+		wx.Frame.__init__(self,None,-1, "EX" , size=(300,300))
+		
+		panel = wx.Panel(self,-1)
+		
+		wx.StaticText(panel,-1,"POS:",pos=(10,12))
+		
+		#有幾個按鈕
+		self.posCtrl  = wx.TextCtrl(panel,-1,"777",pos=(40,10))
+		self.btnClick = wx.Button(panel,-1,label="click",pos=(50,50),size=(50,30))
+		self.btnEnd   = wx.Button(panel,-1,label="End"  ,pos=(100,50),size=(50,30))
+		self.btnHi    = wx.Button(panel,-1,label="Hi"   ,pos=(150,50),size=(50,30))
+		self.btnSend  = wx.Button(panel,-1,label="send" ,pos=(200,50),size=(50,30))
+		
+		#綁定顯示板功能
+		panel.Bind(wx.EVT_MOTION,self.Move)
+		
+		#綁定各個按鈕功能
+		#			功能類型   |	功能來源	|按鈕識別
+		self.Bind(wx.EVT_BUTTON, self.f	        , self.btnClick)
+		self.Bind(wx.EVT_BUTTON, self.EndMe     , self.btnEnd)
+		self.Bind(wx.EVT_BUTTON, self.Hi        , self.btnHi)
+		self.Bind(wx.EVT_BUTTON, send.send_it() , self.btnSend)
+		
+	def Move(self, event):
+		pos = event.GetPosition()
+		self.posCtrl.SetValue("%s, %s" % (pos.x, pos.y))
+	
+	def f(self, event):
+		self.posCtrl.SetValue("Button Click")
+		
+	def EndMe(self, event):
+		self.Destroy()
+
+	def Hi(self, event):
+		print("Hi")
+		self.posCtrl.SetValue("Hi")
+		
+		
+if __name__ == '__main__':
+	app   = wx.App()
+	frame = Frame()
+	frame.Show()
+	app.MainLoop()
