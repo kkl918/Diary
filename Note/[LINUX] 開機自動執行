@@ -1,0 +1,3 @@
+sudo vim /etc/rc.local
+add : python3 /home/kk/Desktop/ip_send.py
+
