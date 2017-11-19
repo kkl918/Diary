@@ -1,0 +1,9 @@
+import os, shutil
+path  = r'C:\Users\林家瑜\Desktop\test\\'
+path2 = r'C:\Users\林家瑜\Desktop\test2\\'
+
+for text in os.listdir(path):
+	if text in os.listdir(path2):
+		pass
+	else:	
+		shutil.copyfile(path+text, path2+text)
