@@ -1,0 +1,4 @@
+PATH:C:\Users\RSLab\AppData\Local\Programs\Python\Python36-32\Scripts
+
+CMD:
+py pyinstaller-script.py --onefile C:\Users\RSLab\Desktop\test\br.py
