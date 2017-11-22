@@ -1,0 +1,13 @@
+#!/usr/bin/python
+from ftplib import FTP
+ftp = FTP('60.249.2.146')
+ftp.login('TBYT00','TBYT0932867611')
+ftp.cwd('TempData')
+ftp.retrlines('LIST')
+
+name = 'NCKU3266.dat'
+file_ = open(name,'rb')
+ftp.storbinary('STOR %s' %  name, file_)
+ftp.quit() 
+file_.close() 
+print "File transfered"
