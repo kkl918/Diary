@@ -1,0 +1,39 @@
+#!/usr/bin/python
+from ftplib import FTP
+ftp = FTP('60.249.2.146')
+ftp.login('TBYT00','TBYT0932867611')
+ftp.cwd('TempData')
+ftp.retrlines('LIST')
+
+name = 'NCKU3266.dat'
+file_ = open(name,'rb')
+ftp.storbinary('STOR %s' %  name, file_)
+ftp.quit() 
+file_.close() 
+print "File transfered"
+
+------------------------------------------------------------------
+try: 
+    ftp = FTP("XXX.XXX.XXX.XXX")
+    ftp.login(username, password) 
+    file = open(File2Send, "rb") 
+    ftp.cwd(Output_Directory)
+    ftp.storbinary('STOR ' + File2Send, file) 
+    print "STORing File now..." 
+    ftp.quit() 
+    file.close() 
+    print "File transfered" 
+else: 
+    print "An error occured"
+------------------------------------------------------------------
+import ftplib
+session = ftplib.FTP('server.address.com','USERNAME','PASSWORD')
+file = open('kitten.jpg','rb')                  # file to send
+session.storbinary('STOR kitten.jpg', file)     # send the file
+file.close()                                    # close file and FTP
+session.quit()
+------------------------------------------------------------------
+To retrieve it, you can use urllib.retrieve:
+import urllib 
+
+urllib.urlretrieve('ftp://server/path/to/file', 'file')
