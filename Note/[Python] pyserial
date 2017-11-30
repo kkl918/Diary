@@ -1,0 +1,229 @@
+Python 研究 - pyserial 用法
+python中pyserial模塊使用方法
+一、概述
+    pyserial模塊封裝了對串口的訪問。
+
+
+二、特性
+    在支持的平台上有統一的接口。
+    通過python屬性訪問串口設置。
+    支持不同的字節大小、停止位、校驗位和流控設置。
+    可以有或者沒有接收超時。
+    類似文件的API，例如read和write，也支持readline等。
+    支持二進制傳輸，沒有null消除，沒有cr-lf轉換。
+
+
+三、系統要求
+    python 2.3及以上版本，包括py3k。
+
+
+四、使用方法和實例
+1、導入pyserial模塊
+import serial
+
+2、打開串行口
+// 打開串口0， 9600，8N1，連接超時0.5秒
+import serial
+ser=serial.Serial(" /dev/ttyUSB0", 9600, timeout= 0.5 ) #使用USB連接串行口
+ser=serial.Serial(" /dev/ttyAMA0", 9600, timeout= 0.5 ) #使用樹莓派的GPIO口連接串行口
+ser=serial.Serial(1 , 9600, timeout= 0.5 )
+#winsows系統使用com1口連接串行口
+ser=serial.Serial("com1" , 9600, timeout= 0.5 )
+#winsows系統使用com1口連接串行口
+ser=serial.Serial(" /dev/ttyS1 " , 9600, timeout= 0.5 )
+#Linux系統使用com1口連接串行口
+print ser.name
+#打印設備名稱
+print ser.port
+#打印設備名
+ser.open
+()  #打開端口
+s = ser.read(10)
+#從端口讀10個字節
+ser.write("hello")
+#向端口些數據
+ser.close()
+#關閉端口
+        data = ser.read(20) #是讀20個字符
+        data = ser.readline()
+#是讀一行，以/n結束，要是沒有/n就一直讀，阻塞。
+        data = ser.readlines()和ser.xreadlines()
+#都需要設置超時時間
+        ser.baudrate = 9600
+#設置波特率
+        ser.isOpen() #看看這個串口是否已經被打開
+
+3、獲得串行口狀態
+串行口的屬性：
+name:設備名字
+portstr:已廢棄，用name代替
+port：讀或者寫端口
+baudrate：波特率
+bytesize：字節大小
+parity：校驗位
+stopbits：停止位
+timeout：讀超時設置
+writeTimeout：寫超時
+xonxoff：軟件流控
+rtscts：硬件流控
+dsrdtr：硬件流控
+interCharTimeout:字符間隔超時
+
+屬性的使用方法：
+ser=serial.Serial(" /dev/ttyAMA0", 9600, timeout= 0.5 )
+ser.open()
+
+print ser. name
+print ser.port
+ print ser. baudrate
+#波特率
+print ser. bytesize
+#字節大小
+print ser. parity
+#校驗位N－無校驗，E－偶校驗，O－奇校驗
+print ser. stopbits
+#停止位
+print ser. timeout
+#讀超時設置
+print ser. writeTimeout
+#寫超時
+print ser. xonxoff
+#軟件流控
+print ser. rtscts
+#硬件流控
+print ser. dsrdtr
+#硬件流控
+print ser. interCharTimeout
+#字符間隔超時
+
+ser.close()
+
+
+4、設置串行口狀態
+需要用的常量
+bytesize：FIVE BITS、SIXBITS、SEVENBITS、EIGHTBITS
+parity: PARITY_NONE, PARITY_EVEN, PARITY_ODD, PARITY_MARK, PARITY_SPACE
+stopbits: STOPBITS_ONE, STOPBITS_ONE_POINT_FIVE, STOPBITS_TWO
+異常：
+ValueError：參數錯誤
+SerialException：找不到設備或不能配置
+
+ ser. baudrate＝9600
+#設置波特率
+
+ser. bytesize＝8
+#字節大小
+ ser. bytesize＝serial.EiGHTBITS
+#8位數據位
+
+ser. parity=serial.PARITY_EVEN
+#偶校驗
+ser.parity=serial.PARITY_NONE
+#無校驗
+ser.parity=serial.PARITY_ODD
+#奇校驗
+
+ser. stopbits＝1
+#停止位
+ser. timeout＝0.5
+#讀超時設置
+ser. writeTimeout＝0.5
+#寫超時
+ser. xonxoff
+#軟件流控
+ser. rtscts
+#硬件流控
+ser. dsrdtr
+#硬件流控
+ser. interCharTimeout
+#字符間隔超時
+5、Readline方法的使用
+        是讀一行，以/n結束，要是沒有/n就一直讀，阻塞。
+        使用readline()時應該注意：打開串口時應該指定超時，否則如果串口沒有收到新行，則會一直等待。如果沒有超時，readline會報異常。
+
+6、serial.Serial類——原生端口
+class serial.Serial
+{
+    __init__(port=None, baudrate=9600, bytesize=EIGHTBITS,parity=PARITY_NONE, stopbits=STOPBITS_ONE, timeout=None, xonxoff=False, rtscts=False, writeTimeout=None, dsrdtr=False, interCharTimeout=None)
+
+    #其中:
+    #  bytesize：FIVEBITS、SIXBITS、SEVENBITS、EIGHTBITS
+    #  parity: PARITY_NONE, PARITY_EVEN, PARITY_ODD, PARITY_MARK, PARITY_SPACE
+    #  stopbits: STOPBITS_ONE, STOPBITS_ONE_POINT_FIVE, STOPBITS_TWO
+    #異常：
+    #ValueError：參數錯誤
+    #SerialException：找不到設備或不能配置
+
+    open()：打開串口
+
+    close()：立即關閉串口
+
+    __del__()：析構函數
+
+    read(size=1)：從串口讀size個字節。如果指定超時，則可能在超時後返回較少的字節；如果沒有指定超時，則會一直等到收完指定的字節數。
+
+    write(data)：發送data，並返回發送字節數。如果bytes和bytearray可用（python 2.6以上），則接受其作為參數；否則接受str作為參數。
+    #異常：SerialTimeoutException——配置了寫超時並發生超時時發生此異常。
+
+    inWaiting()：返回接收緩存中的字節數
+
+    flush()：等待所有數據寫出。
+
+    flushInput()：丟棄接收緩存中的所有數據
+
+    flushOutput()：終止當前寫操作，並丟棄發送緩存中的數據。
+
+    sendBreadk(duration=0.25)：發送BREAK條件，並於duration時間之後返回IDLE
+
+    setBreak(level=True)：根據level設置break條件。
+
+    setRTS(level=True)
+
+    setDTR(level=True)
+
+    getCTS()
+
+    getDSR()
+
+    getRI()
+
+    getCD()
+
+    #只讀屬性：
+    name:設備名字
+    portstr:已廢棄，用name代替
+    port：讀或者寫端口
+    baudrate：波特率
+    bytesize：字節大小
+    parity：校驗位
+    stopbits：停止位
+    timeout：讀超時設置
+    writeTimeout：寫超時
+    xonxoff：軟件流控
+    rtscts：硬件流控
+    dsrdtr：硬件流控
+    interCharTimeout:字符間隔超時
+
+    #端口設置可以被讀入字典，也可從字典加載設置：
+    getSettingDict()：返回當前串口設置的字典
+    applySettingDict(d):應用字典到串口設置
+
+    #對提供io庫的系統（python 2.6或以上），Serial從io.RawIOBase派生。對其它系統，從FileLike派生。
+
+    #異常：
+    exception serial.SerialException
+    exception serial.SerialTimeoutException
+
+    #常量：
+    serial.VERSION：pyserial版本
+
+    #模塊函數和屬性：
+    serial.device(number)
+
+    serial.serial_for_url(url, *args, **kwargs)
+
+    serial.protocol_handler_packages()
+
+    serial.to_bytes(sequence)：接收一個字符串或整數列表sequence，返回bytes實例
+}
+
