@@ -1,0 +1,47 @@
+
+# coding: utf-8
+
+# In[9]:
+
+
+import pandas as pd
+import numpy as np
+import glob, os, sys
+
+files = glob.glob('*.waypoints')
+for file in files:
+    mp = pd.read_csv(file,sep='\t',skiprows=1,header=None)
+    lt = pd.read_csv('lit.csv',sep=',')
+    par = ['heading(deg)',
+           'curvesize(m)', 'rotationdir', 'gimbalmode', 'gimbalpitchangle',
+           'actiontype1', 'actionparam1', 'actiontype2', 'actionparam2',
+           'actiontype3', 'actionparam3', 'actiontype4', 'actionparam4',
+           'actiontype5', 'actionparam5', 'actiontype6', 'actionparam6',
+           'actiontype7', 'actionparam7', 'actiontype8', 'actionparam8',
+           'actiontype9', 'actionparam9', 'actiontype10', 'actionparam10',
+           'actiontype11', 'actionparam11', 'actiontype12', 'actionparam12',
+           'actiontype13', 'actionparam13', 'actiontype14', 'actionparam14',
+           'actiontype15', 'actionparam15']
+    lt = lt[par]
+    lt['curvesize(m)'] = 10
+
+    mp = mp[[8,9,10]]
+    mp = mp.loc[mp[8] != 0.000000]
+    mp_lon  = mp[8].values
+    mp_lat  = mp[9].values
+    mp_high = mp[10].values
+    df = pd.DataFrame({'latitude': mp_lon, 'longitude': mp_lat, 'altitude(m)': mp_high})
+    df = df[['latitude', 'longitude', 'altitude(m)']]
+    mp
+    #df=df.add(df,axis='columns', level=None, fill_value=None)
+
+    re = pd.concat([df, lt], axis=1)
+    re = re.iloc[1:len(df)]
+    re.to_csv('out.csv',index = False)
+
+
+# In[ ]:
+
+
+
+
