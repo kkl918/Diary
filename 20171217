@@ -1,0 +1,22 @@
+# !/usr/bin/python3
+from tkinter import *
+
+from tkinter import messagebox
+
+w = Tk()
+w.geometry("100x100")
+
+def helloCallBack():
+   msg = messagebox.showinfo( "Hello Python", "Hello World")
+
+def quit():
+   w.destroy()
+
+B = Button(w, text = "Hello", command = helloCallBack)
+B.place(x = 50,y = 50)
+
+B2 = Button(w, text = "Quit", command = quit)
+B2.place(x = 100,y = 50)
+
+
+w.mainloop()
