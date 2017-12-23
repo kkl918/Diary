@@ -1,0 +1,26 @@
+import sys
+def readfile(filename):
+    f = open(filename)
+    while True:
+        line = f.readline()
+        if len(line)==0:
+            break
+        print(line)
+    f.close()
+    
+if len(sys.argv) < 2:
+    print('No argument')
+    sys.exit()
+
+if sys.argv[1].startswith('--'):
+    option = sys.argv[1][2:]
+    if option == 'v':
+        print('Version 1.2.3')
+    elif option == 'h':
+        print('Help')
+    else:
+        print('--v or --h')
+        sys.exit()
+else:
+    for filename in sys.argv[1:]:
+        readfile(filename)
