@@ -51,4 +51,4 @@ $ */5 * * * * /home/ubuntu/test.sh                          每五分鐘執行�
 $ 0   9 * * 1-6 node /home/ubuntu/workspace/report.js       每天早上九點（除了星期日）執行 report.js 這隻檔案
 $ 40 08 * * 1-5 /usr/bin/python3.5 /home/kk/clock_in/on.py  每天的8:40 週一到週五 /usr/bin/python3.5 執行/home/kk/clock_in/on.py
 $ 00 18 * * 1-5 /usr/bin/python3.5 /home/kk/clock_in/off.py 每天的8:40 週一到週五 /usr/bin/python3.5 執行/home/kk/clock_in/off.py
-$ 0 */3 * * 1-5 /usr/bin/python3.5 /home/kk/clock_in/off.py 每天的8:40 週一到週五 /usr/bin/python3.5 >> /home/kk/Desktop/cron.log
+$ 0 */3 * * 1-5 /usr/bin/python3.5 /home/kk/clock_in/off.py 每小時執行 週一到週五 /usr/bin/python3.5 >> /home/kk/Desktop/cron.log
