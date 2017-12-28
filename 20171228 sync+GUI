@@ -1,0 +1,38 @@
+#!/usr/bin/python3
+import os,sys
+from dirsync import sync
+from tkinter import *
+from tkinter import messagebox
+
+def do_sync(sourcedir,targetdir):
+	sync(sourcedir, targetdir, 'sync',nodirection=True)
+
+
+win = Tk()
+win.geometry("300x150")
+win.title('Folder Sync')
+
+def quit():
+   win.destroy()
+
+def f():
+    print(path_1.get())
+
+# Label
+label_1 = Label(win, text = 'Sourcedir : ').place(x=10, y=10)
+
+label_2 = Label(win, text = 'Targetdir : ').place(x=10, y=50)
+
+
+sourcedir = Entry(win, width=20)
+sourcedir.place(x=80, y=10)
+
+targetdir = Entry(win, width=20)
+targetdir.place(x=80, y=50)
+
+
+# Button
+quit = Button(win, text = "Quit", command = quit).place(x = 150,y = 100)
+do_sync = Button(win, text = "Sync", command =  do_sync(sourcedir,targetdir)).place(x = 50,y = 100)
+
+win.mainloop()
