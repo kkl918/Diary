@@ -1,0 +1,25 @@
+#!/usr/bin/env python3
+import sys, os, time, datetime,json
+import random, smtplib, requests
+
+rand = random.randint(600,2200)
+min = int(rand/60)
+sec = rand%60
+
+exe_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+url   = 'http://eadm.ncku.edu.tw/welldoc/ncku/iftwd/doSignIn.php'
+
+check = {"Content-Type":"application/json","data":{"fn":"list","psnCode":"10502065","password":"10502065"}}
+
+on    = {"Content-Type":"application/json","data":{"fn":"signIn","mtime":"A","psnCode":"10502065","password":"10502065",}}
+
+off   = {"Content-Type":"application/json","data":{"fn":"signIn","mtime":"D","psnCode":"10502065","password":"10502065",}}
+
+#----------------------------------------------------------------------------------------------------------------------------
+
+res = requests.post(url, json = check).text
+data  = json.loads(res)
+#print(res)
+a = data['detail'][0]['remote_addr']
+print(a)
