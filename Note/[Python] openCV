@@ -1,0 +1,4 @@
+
+(1) conda create -yn opencv python=3.5.2
+(2) activate opencv
+(3) conda install -c menpo opencv3
