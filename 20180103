@@ -1,0 +1,82 @@
+#!/usr/bin/env python3
+import time, datetime, pathlib, sys, os, requests, re
+from bs4 import BeautifulSoup
+from urllib.request import urlretrieve
+from linebot import LineBotApi
+from linebot.models import TextSendMessage
+from linebot.models import ImageSendMessage
+
+usr_id  = [ 'U1c5963fc1852528a71dd6aec6d155c7b','U7b669e94630f883c6c2899dca3ed9fea',
+			'Uaaa5c3567e84e275fe939cef6859b0b5','U8da72ed69be8a2ed8dd7fc336505ffa1',
+			'U99bd52a54e27fedddf25c0ac9440b88a','U94390a4394bdc2fb4d56516fc1ba1630']
+
+#usr_id1 = 'U99bd52a54e27fedddf25c0ac9440b88a'
+#usr_id2 = 'U94390a4394bdc2fb4d56516fc1ba1630'
+
+token = 'cDg0cSra/yUdJSUTkfvu6tdvTneYPpMsoFh12H+pRoHKGU5LO6yFm8VmWJCCLaExLbM6o3ZDHPQQ3Dlesd3aZf1kBKL8scGl+4O4Hp/jdZygUBDHr5P6mtbBDKRASpp7pigZp6yUZ8Ur+jPEtsVBLwdB04t89/1O/w1cDnyilFU='
+secre = 'b352eb7c0aed94d0009326e7ae46cd70'
+
+
+path = '/media/kk/Geodac1/PTT_BEAUTY/'
+#path = 'D:/PTT_BEAUTY/'
+pathlib.Path(path).mkdir(parents=True, exist_ok=True)
+
+
+url = 'https://www.ptt.cc/bbs/Beauty/index.html'
+res = requests.get(url)
+soup = BeautifulSoup(res.text, 'lxml')
+if   res.status_code == 200:
+
+    print('Load page successed.',datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    for article in soup.select('.r-ent a'):
+        title = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——:！<>，。？?、~@#￥%……&*（）]+",'',article.text)
+        url = 'https://www.ptt.cc' + article['href']  
+
+        if title[:4] != '[公告]':
+
+            if title in os.listdir(path):
+                pass
+            else:
+                print(url,'\t',title)
+                pathlib.Path(path+title).mkdir(parents=True, exist_ok=True)
+                res = requests.get(url)
+                soup = BeautifulSoup(res.text, 'lxml')
+                type_1 = soup.findAll('a', {'href':re.compile('^https?:\/\/i\.imgur\.com\/.*')})
+                type_2 = soup.findAll('a', {'href':re.compile('^https?://imgur.com')})
+
+                def img_get(it):
+                    if len(it) > 0:
+                      for index, img_url in enumerate(it):
+
+                        if img_url.text[0:12] == 'http://imgur':
+                            img_url = img_url.text
+                            img_url = img_url[:7] + 'i.' + img_url[7:] + '.jpg'
+                        else:
+                            img_url = img_url.text
+
+                        try:
+                                line_bot_api = LineBotApi(token)
+                                #line_bot_api.multicast([usr_id1, usr_id2], TextSendMessage(text=title))
+                                #line_bot_api.push_message(usr_id2, TextSendMessage(text=title))
+                                
+                                image_message = ImageSendMessage(original_content_url = img_url,preview_image_url = img_url)
+                                line_bot_api.multicast(usr_id, image_message)
+                                #line_bot_api.multicast([usr_id1, usr_id2], image_message)
+                                #line_bot_api.push_message(usr_id2, image_message)
+                                
+                                urlretrieve(img_url, (path+title+'/{}_{}.jpg').format(title, index))
+                                print('{} {}_{}.jpg \t 下載成功!'.format(img_url, title, index))
+                        except:
+                                print('{} {}_{}.jpg 下載失敗!'.format(img_url, title, index))
+                img_get(type_1)
+                img_get(type_2)
+                #print(url, '\t', title, '下載成功!')
+                print('Done.')
+
+
+    #time.sleep(300)
+#print(os.listdir(path))
+#print('Done.')
+#os.system("pause")
+
+
