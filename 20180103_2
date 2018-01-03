@@ -1,0 +1,67 @@
+#!/usr/bin/env python3
+import time, datetime, pathlib, sys, os, requests, re
+from bs4 import BeautifulSoup
+from urllib.request import urlretrieve
+
+'''
+from linebot import LineBotApi
+from linebot.models import TextSendMessage
+from linebot.models import ImageSendMessage
+
+token = 'cDg0cSra/yUdJSUTkfvu6tdvTneYPpMsoFh12H+pRoHKGU5LO6yFm8VmWJCCLaExLbM6o3ZDHPQQ3Dlesd3aZf1kBKL8scGl+4O4Hp/jdZygUBDHr5P6mtbBDKRASpp7pigZp6yUZ8Ur+jPEtsVBLwdB04t89/1O/w1cDnyilFU='
+secre = 'b352eb7c0aed94d0009326e7ae46cd70'
+
+line_bot_api = LineBotApi(token)
+
+# 單獨發文字訊息
+#line_bot_api.push_message(usr_id2, TextSendMessage(text=title))
+
+# 單獨發圖片
+#line_bot_api.push_message(usr_id2, image_message)
+
+# 群發文字訊息
+line_bot_api.multicast(usr_id, TextSendMessage(text=title))
+
+# 群發圖片
+image_message = ImageSendMessage(original_content_url = img_url,preview_image_url = img_url)                                    
+line_bot_api.multicast(usr_id, image_message)
+
+'''
+
+class ptt_beauty:
+    url  = 'https://www.ptt.cc/bbs/Beauty/index.html'
+    ptt  = 'https://www.ptt.cc'
+    soup = BeautifulSoup(requests.get(url).text, 'lxml').select('.r-ent a')
+
+    url_list   = [] # 第一層URL    
+    title_list = [] # 第一層標題   
+    img_list   = [] # 第二層圖片
+    dic        = {} # {標題:圖片}
+
+    # 第一層標題
+    for title in soup:
+        title = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——:！<>，。？?、~@#￥%……&*（）]+",'',title.text)
+        if title[:4] != '[公告]':
+            title_list.append(title)
+
+    # 第一層標題URL
+    for url in soup:
+        url_list.append(ptt + url['href'])
+        # 第二層標題內圖片URL
+        for article in url_list:
+            img   = BeautifulSoup(requests.get(article).text, 'lxml')        
+            
+            for index, img_url in enumerate(img.findAll('a', {'href':re.compile('^https?:\/\/i\.imgur\.com\/.*')})):
+                if img_url.text[0:12] == 'http://imgur':
+                    img_url = img_url.text
+                    img_url = img_url[:7] + 'i.' + img_url[7:] + '.jpg'
+                else:
+                    img_url = img_url.text
+            img_list.append(img_url)
+            #for index, img_url in enumerate(img.findAll('a', {'href':re.compile('^https?://imgur.com')})):
+                #img_list.append(img_url.text)
+        # 建立字典
+        dic[ptt + url['href']] = img_list
+
+p = ptt_beauty()
+print(p.dic)
