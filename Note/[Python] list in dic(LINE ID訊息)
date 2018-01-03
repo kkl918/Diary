@@ -1,0 +1,21 @@
+dic ={
+        "events": [
+                    {
+                        "type": "message",
+                        "replyToken": "15c0c2b7c467460988df6ca493ea6d44",
+                        "source": {
+                            "userId": "U99bd52a54e27fedddf25c0ac9440b88a",
+                            "type": "user"
+                                  },
+                        "timestamp": 1514962900518,
+                        "message": {
+                            "type": "text",
+                            "id": "7249319782597",
+                            "text": "隊長"
+                        }
+                     }
+                  ]
+    }
+
+dic = dic['events'][0]['source']['userId']
+print(dic)
