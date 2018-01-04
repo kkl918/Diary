@@ -1,0 +1,47 @@
+#!/usr/bin/env python3
+import time, datetime, pathlib, sys, os, requests, re
+from bs4 import BeautifulSoup
+from urllib.request import urlretrieve
+
+
+
+class ptt_beauty:
+    path = r'C:\Users\Roy\Desktop\777\\'
+    url  = 'https://www.ptt.cc/bbs/Beauty/index.html'
+    ptt  = 'https://www.ptt.cc'
+    soup = BeautifulSoup(requests.get(url).text, 'lxml').select('.r-ent a')
+
+    url_list   = [] # 第一層URL    
+    title_list = [] # 第一層標題   
+    img_list   = [] # 第二層圖片
+    dic        = {} # {標題:標題URL}
+
+    # 第一層標題
+    for item in soup:
+        title     = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——:！<>，。？?、~@#￥%……&*（）]+",'',item.text)
+        title_url = ptt + item['href']
+        if title[:4] != '[公告]':
+            # 建立 {標題:標題 URL}
+            dic[title] = title_url
+            if title in os.listdir(path):
+                #pass
+            #else:
+                pathlib.Path(path+title).mkdir(parents=True, exist_ok=True)
+                soup = BeautifulSoup(requests.get(title_url).text, 'lxml')
+                type_1 = soup.findAll('a', {'href':re.compile('^https?:\/\/i\.imgur\.com\/.*')})
+                #type_2 = soup.findAll('a', {'href':re.compile('^https?://imgur.com')})
+                for i in type_1:
+                    print(i)
+                    #url_list.append(ptt + url['href'])
+    # 第一層 URL
+    #for url in soup:
+        #url_list.append(ptt + url['href'])
+    
+    # 第二層 IMG_URL
+    #for article in url_list:
+           # img   = BeautifulSoup(requests.get(article).text, 'lxml')        
+            
+
+
+p = ptt_beauty()
+#print(p.dic)
