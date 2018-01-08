@@ -1,0 +1,72 @@
+#!/usr/bin/env python3
+import time, datetime, pathlib, sys, os, requests, re
+from bs4 import BeautifulSoup
+from urllib.request import urlretrieve
+
+path = r"D:\\PTT_BEAUTY\\"
+
+class ptt_beauty:
+    path = r'C:\Users\rslab142\Desktop\TEST\\'
+    url  = 'https://www.ptt.cc/bbs/Beauty/index.html'
+    ptt  = 'https://www.ptt.cc'
+    soup = BeautifulSoup(requests.get(url).text, 'lxml').select('.r-ent a')
+
+    url_list      = [] # 第一層URL
+    title_list    = [] # 第一層標題
+    img_list      = [] # 第二層圖片
+    dic_title_url = {} # {標題:標題網址}
+    dic_title_img = {} # {標題:[圖片]}
+    
+
+    # 第一層標題，解析出標題title以及各個標題的網址title_url
+    for item in soup:
+        img = []
+        # 第一次透析產出標題與標題網址
+        title     = re.sub("[\s+\.\!\/_,$%^*()+\"\']+|[+——:！<>，。？?、~@#￥%……&*（）]+",'', item.text)
+        title_url = ptt + item['href']
+        
+        # 替除掉標題裡有[公告]的項目
+        if title[:4] != '[公告]':
+            
+            # 建立字典 { 標題:標題網址 }
+            dic_title_url[title] = title_url
+            
+            # 如果在目錄中已經存在則跳過(抓過了就不再抓)
+            if title in os.listdir(path):
+                pass
+            else:
+                # 對標題建立新資料夾
+                #pathlib.Path(path+title).mkdir(parents=True, exist_ok=True)
+                
+                # 針對各個標題網址內容進行二次透析，
+                soup = BeautifulSoup(requests.get(title_url).text, 'lxml')
+                
+                #分兩種類型['i.imgur','imgur']
+                type_1 = soup.findAll('a', {'href':re.compile('^https?:\/\/i\.imgur\.com\/.*')})
+                type_2 = soup.findAll('a', {'href':re.compile('^https?://imgur.com')})
+                
+                # 用兩個迴圈讀取兩種格式解讀成純URL新增到LIST
+               
+                
+                #print(title)
+                for i in type_1:
+                    img.append(i.text)
+                    #print('i',i.text, ' ', type(i))
+                for j in type_2:
+                    img.append(j.text)  
+                    #print('j',j.text, ' ', type(j))
+            print(title, img)    
+            
+            # 建立字典 {標題:[標題內所有圖片網址]} -> {key,[list]}
+            #dic_title_img[title] = img
+            
+            
+
+p = ptt_beauty()
+keys   = list(p.dic_title_img.keys())
+values = list(p.dic_title_img.values())
+
+for i in keys:
+    print(i)
+    for j in values:
+       print(j)
