@@ -1,0 +1,6 @@
+ /dev/hda
+ /dev 是個目錄，是裝置 (device) 的縮寫
+ /hda 則是 Hard Disk A (hda) 的縮寫,slave 硬碟稱為 /dev/hdb 
+ /dev/hdc 光碟機的代號
+ 
+第一顆 SATA 硬碟為 /dev/sda, 第二顆為 /dev/sdb 以此類推。
