@@ -1,0 +1,22 @@
+https://blog.gtwang.org/linux/dd-command-examples/
+備份整顆硬碟
+將 /dev/sda 所有的資料寫入 /dev/sdb：
+
+sudo dd if=/dev/sda of=/dev/sdb
+if 參數指定的是輸入檔案（input file），而 of 參數指定的是輸出檔案（output file），這行指令會將 /dev/sda 這顆硬碟的資料讀出來，然後寫進 /dev/sdb 這顆硬碟。
+
+在整個過程中如果出現讀取錯誤的話，dd 就會停止執行，如果想要讓 dd 在出現讀取錯誤時還是繼續拷貝資料的話，就要加上 conv=noerror 參數，這個選項通常在備份資料時會使用到，另外加上 sync 可以讓 dd 以 synchronized I/O 的方式備份資料：
+
+sudo dd if=/dev/sda of=/dev/sdb conv=noerror,sync
+
+建立硬碟的備份影像檔
+備份硬碟資料除了拿兩顆硬碟對拷之外，也可以直接將整顆硬碟的資料製作成影像檔，以這種方式備份資料會更有彈性：
+
+sudo dd if=/dev/hda of=~/hdadisk.img
+這行指令會將 /dev/sda 這顆硬碟的資料讀出來，儲存至 ~/hdadisk.img 這個影像檔中。
+
+從備份影像檔回復硬碟資料
+如果要以影像檔回復硬碟的資料，就執行：
+
+sudo dd if=hdadisk.img of=/dev/hdb
+這樣就會把 hdadisk.img 影像檔中的資料回復至 /dev/sdb 這顆硬碟（原本 /dev/sdb 硬碟中的所有資料會被覆蓋掉，請小心使用）。
