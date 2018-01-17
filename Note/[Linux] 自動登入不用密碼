@@ -1,0 +1,3 @@
+/usr/share/lightdm/lightdm.conf.d/60-lightdm-gtk-greeter.conf
+
+autologin-user=pi
