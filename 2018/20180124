@@ -5,25 +5,20 @@ from ftplib import FTP
 data_path = '/home/kk/Desktop/DATA/'
 
 # 依次序為[主機IP,使用者帳號,使用者密碼,FTP伺服器檔案路徑(FTP須先建立資料夾)]
-ftp_ip  = '140.116.89.125'
-ftp_usr = 'azes'
-ftp_pwd = 'azes00'
-ftp_cwd = '/azes'
+win_ip  = '140.116.89.125'
+win_usr = 'azes'
+win_pwd = 'azes00'
+win_cwd = '/azes'
 
-ftp = FTP(ftp_ip)
-ftp.login(ftp_usr, ftp_pwd)
+def win_ftp(ip, usr, pwd, cwd):
+    ftp = FTP(ftp_ip)
+    ftp.login(ftp_usr, ftp_pwd)
 
-for file in ftp.nlst(ftp_cwd):
-    size = ftp.size(ftp_cwd +'/'+file)/(1024*1024)
-    print(file, ' ', size)
-'''
-for dat in os.listdir(data_path):
-    if dat in ftp.nlst(ftp_cwd):
-        pass
-    else:
-        print('Start  transmission.\n')
-        file_ = open('/home/kk/Desktop/DATA/'+ dat,'rb')
-        ftp.storbinary('STOR %s' % dat, file_)
-        print('Finish  transmission.\n')
-        '''
-ftp.quit()
+    for file in ftp.nlst(ftp_cwd):
+        size = ftp.size(ftp_cwd +'/'+file)/(1024*1024)
+        print(file, ' ', size)
+
+    ftp.quit()
+    
+    
+win_ftp(win_ip, win_usr, win_pwd, win_cwd)
