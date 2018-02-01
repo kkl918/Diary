@@ -1,0 +1,3 @@
+sudoPassword = 'mypass'
+command = 'mount -t vboxsf myfolder /home/myuser/myfolder'
+p = os.system('echo %s|sudo -S %s' % (sudoPassword, command))
