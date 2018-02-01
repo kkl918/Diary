@@ -1,0 +1,7 @@
+import os, json
+t = os.popen('curl http://localhost:4040/api/tunnels').read()
+data = json.loads(t)
+dd = data["tunnels"][1]
+for key in dd.keys():
+	if  key == 'public_url':
+		print(dd[key])
