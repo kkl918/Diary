@@ -1,0 +1,225 @@
+paramiko是用python語言寫的一個模塊，遵循SSH2協議，支持以加密和認證的方式，進行遠程服務器的連接。
+使用paramiko可以很好的解決以下問題：
+需要使用windows客戶端，
+遠程連接到Linux服務器，查看上面的日誌狀態，批量配置遠程服務器，文件上傳，文件下載等
+
+"paramiko" is a combination of the esperanto words for "paranoid" and
+"friend".  it's a module for python 2.5+ that implements the SSH2 protocol
+for secure (encrypted and authenticated) connections to remote machines.
+unlike SSL (aka TLS), SSH2 protocol does not require hierarchical
+certificates signed by a powerful central authority. you may know SSH2 as
+the protocol that replaced telnet and rsh for secure access to remote
+shells, but the protocol also includes the ability to open arbitrary
+channels to remote services across the encrypted tunnel (this is how sftp
+works, for example).
+
+it is written entirely in python (no C or platform-dependent code) and is
+released under the GNU LGPL (lesser GPL).
+
+the package and its API is fairly well documented in the "doc/" folder
+that should have come with this archive.
+
+Requirements
+------------
+
+ - python 2.5 or better
+ - pycrypto 2.1 or better
+
+If you have setuptools, you can build and install paramiko and all its
+dependencies with this command (as root)::
+
+   easy_install ./
+
+Portability
+-----------
+
+i code and test this library on Linux and MacOS X. for that reason, i'm
+pretty sure that it works for all posix platforms, including MacOS. it
+should also work on Windows, though i don't test it as frequently there.
+if you run into Windows problems, send me a patch: portability is important
+to me.
+
+some python distributions don't include the utf-8 string encodings, for
+reasons of space (misdirected as that is). if your distribution is
+missing encodings, you'll see an error like this::
+
+   LookupError: no codec search functions registered: can't find encoding
+
+this means you need to copy string encodings over from a working system.
+(it probably only happens on embedded systems, not normal python
+installs.) Valeriy Pogrebitskiy says the best place to look is
+``.../lib/python*/encodings/__init__.py``.
+
+Bugs & Support
+--------------
+
+Please file bug reports at https://github.com/paramiko/paramiko/. There is currently no mailing list but we plan to create a new one ASAP.
+
+Demo
+----
+
+several demo scripts come with paramiko to demonstrate how to use it.
+probably the simplest demo of all is this::
+
+   import paramiko, base64
+   key = paramiko.RSAKey(data=base64.decodestring('AAA...'))
+   client = paramiko.SSHClient()
+   client.get_host_keys().add('ssh.example.com', 'ssh-rsa', key)
+   client.connect('ssh.example.com', username='strongbad', password='thecheat')
+   stdin, stdout, stderr = client.exec_command('ls')
+   for line in stdout:
+       print '... ' + line.strip('\n')
+   client.close()
+
+...which prints out the results of executing ``ls`` on a remote server.
+(the host key 'AAA...' should of course be replaced by the actual base64
+encoding of the host key.  if you skip host key verification, the
+connection is not secure!)
+
+the following example scripts (in demos/) get progressively more detailed:
+
+:demo_simple.py:
+   calls invoke_shell() and emulates a terminal/tty through which you can
+   execute commands interactively on a remote server.  think of it as a
+   poor man's ssh command-line client.
+
+:demo.py:
+   same as demo_simple.py, but allows you to authenticiate using a
+   private key, attempts to use an SSH-agent if present, and uses the long
+   form of some of the API calls.
+
+:forward.py:
+   command-line script to set up port-forwarding across an ssh transport.
+   (requires python 2.3.)
+
+:demo_sftp.py:
+   opens an sftp session and does a few simple file operations.
+
+:demo_server.py:
+   an ssh server that listens on port 2200 and accepts a login for
+   'robey' (password 'foo'), and pretends to be a BBS.  meant to be a
+   very simple demo of writing an ssh server.
+
+:demo_keygen.py:
+   an key generator similar to openssh ssh-keygen(1) program with
+   paramiko keys generation and progress functions.
+
+Use
+---
+
+the demo scripts are probably the best example of how to use this package.
+there is also a lot of documentation, generated with epydoc, in the doc/
+folder.  point your browser there.  seriously, do it.  mad props to
+epydoc, which actually motivated me to write more documentation than i
+ever would have before.
+
+there are also unit tests here::
+
+   $ python ./test.py
+
+which will verify that most of the core components are working correctly.
+
+－、執行遠程命令:
+#!/usr/bin/python
+#coding:utf-8
+import paramiko
+port =22
+ssh = paramiko.SSHClient()
+ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+ssh.connect("*.*.*.*",port,"username", "password")
+stdin, stdout, stderr = ssh.exec_command("你的命令")
+print stdout.readlines()
+ssh.close()
+
+二、上傳文件到遠程
+#!/usr/bin/python
+#coding:utf-8
+import paramiko
+
+port =22
+t = paramiko.Transport(("IP",port))
+t.connect(username = "username", password = "password")
+sftp = paramiko.SFTPClient.from_transport(t)
+remotepath='/tmp/test.txt'
+localpath='/tmp/test.txt'
+sftp.put(localpath,remotepath)
+t.close()
+
+三、從遠程下載文件
+#!/usr/bin/python
+#coding:utf-8
+import paramiko
+
+port =22
+t = paramiko.Transport(("IP",port))
+t.connect(username = "username", password = "password")
+sftp = paramiko.SFTPClient.from_transport(t)
+remotepath='/tmp/test.txt'
+localpath='/tmp/test.txt'
+sftp.get(remotepath, localpath)
+t.close()
+
+四、執行多個命令
+#!/usr/bin/python
+#coding:utf-8
+
+import sys
+sys.stderr = open('/dev/null')       # Silence silly warnings from paramiko
+import paramiko as pm
+sys.stderr = sys.__stderr__
+import os
+
+class AllowAllKeys(pm.MissingHostKeyPolicy):
+   def missing_host_key(self, client, hostname, key):
+       return
+
+HOST = '127.0.0.1'
+USER = ''
+PASSWORD = ''
+
+client = pm.SSHClient()
+client.load_system_host_keys()
+client.load_host_keys(os.path.expanduser('~/.ssh/known_hosts'))
+client.set_missing_host_key_policy(AllowAllKeys())
+client.connect(HOST, username=USER, password=PASSWORD)
+
+channel = client.invoke_shell()
+stdin = channel.makefile('wb')
+stdout = channel.makefile('rb')
+
+stdin.write('''
+cd tmp
+ls
+exit
+''')
+print stdout.read()
+
+stdout.close()
+stdin.close()
+client.close()
+
+五、獲取多個文件
+#!/usr/bin/python
+#coding:utf-8
+
+import paramiko
+import os
+
+ssh = paramiko.SSHClient()
+ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+ssh.connect('localhost',username='****')
+
+apath = '/var/log'
+apattern = '"*.log"'
+rawcommand = 'find {path} -name {pattern}'
+command = rawcommand.format(path=apath, pattern=apattern)
+stdin, stdout, stderr = ssh.exec_command(command)
+filelist = stdout.read().splitlines()
+
+ftp = ssh.open_sftp()
+for afile in filelist:
+   (head, filename) = os.path.split(afile)
+   print(filename)
+   ftp.get(afile, './'+filename)
+ftp.close()
+ssh.close()
