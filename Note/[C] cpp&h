@@ -1,0 +1,30 @@
+>想繼續請教的是
+>為什麼又會有其它的CPP檔案
+
+最簡單的 project, 一個 main() 就夠了, 所有的動作都在 main() 裡進行. 因為大部分的 compiler 是用檔名的 extension 來分辨檔案的種類, 所以檔名的 extension 要用 ".cpp".
+
+檔名可以是你自己給的, 或是預先講好要用某個名稱. 比如說學校的功課老師要用 ex1.cpp, proj1.cpp, 等等...
+
+稍複雜的 project, 有可能會有很多東西要做, 一般都不會全部放在一個 main() 裡來做, 因為有可能牽一髮而動全身. 正常的做法是把要做的東西依功能分成幾個 function 來做. Function 與 function 之間沒有直接的連繫, 修改一個 function 並不會對另一個 function 造成影響.
+
+有時, function 太多了, 全部放在同一個檔案不好維修, 通常會把一些相關的 functions 放進另一個檔案裡. 或者有一些 functions 可以用在別的 project, 把這些常用的 functions 抽出來用另一個檔案來存也是一個很常見的情況. 
+
+大型的 project, 有幾十到幾百個檔案是很常見的.
+
+如果有用 class 的話, 一個 class 一個檔案也是很普通的.
+
+分開放也有好處. 當 compile 的時候, 你只需要 compiler 修改過的檔案. 因為每一個檔案比較小, 相對 compile 的時間也縮短了.
+
+
+>例如有123.h卻又有123.CPP
+
+當你呼叫 function 時, C++ compiler 要先知道該 function 的特性, 如 function 回傳的型態, 函數的數目, 以及函數的型態. 也就是一般所說的 function prototype, 或 function declaration. Compiler 用這些資料來檢查程式中用法上的錯誤: 如函數數目上的不符, 或型態上的不符.
+
+因為以上總總的原因, 把一些 functions 放入別的 .cpp 檔案裡了, 同時又因為 compiler 在呼叫 function 時需要看到 function 的宣告, 所以一般上都把 functions 的宣告放在 .h 裡. 為了方便, 一般上都用回同樣的檔名, 只是 extension 用 .h.
+
+>而這兩個有什麼差別?
+
+.cpp 存的是 functions 的定義.
+.h 存的是 function 的宣告.
+
+如果是跟 class 有關的檔案, class 的定義是放在 .h 裡. Class member functions 的定義是放在 .cpp 裡.
