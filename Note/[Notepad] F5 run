@@ -1,0 +1,1 @@
+cmd /k py "$(FULL_CURRENT_PATH)" & PAUSE & EXIT 
