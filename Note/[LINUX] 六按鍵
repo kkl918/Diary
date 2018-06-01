@@ -1,0 +1,3 @@
+sudp apt update
+sudo apt install python-pygame
+sudo nano /etc/modules -> #rpi switch
