@@ -1,3 +1,11 @@
 sudp apt update
 sudo apt install python-pygame
 sudo nano /etc/modules -> #rpi switch
+
+GPIO 4  side
+GPIO 5  X
+GPIO 17 side
+GPIO 22 square
+GPIO 23 circle
+GPIO 24 trigon
+GPIO 27 back-light 
