@@ -9,3 +9,38 @@ GPIO 22 square
 GPIO 23 circle
 GPIO 24 trigon
 GPIO 27 back-light 
+
+import time
+import RPi.GPIO as GPIO
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(4 , GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(5 , GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(17, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(22, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(23, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(24, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
+while 1:
+    if(not GPIO.input(4)):
+        print("side "+u"\u140D")
+
+    if(not GPIO.input(5)):
+        print("X")
+        #GPIO.output(27, GPIO.LOW)
+
+    if(not GPIO.input(17)):
+        print("side "+u"\u140E")
+
+    if(not GPIO.input(22)):
+        print(u"\u25A1")
+
+    if(not GPIO.input(23)):
+        print("O")
+
+    if(not GPIO.input(24)):
+        print(u"\u1403")
+        #GPIO.output(27, GPIO.LOW)
+
+    time.sleep(0.1)
