@@ -1,0 +1,25 @@
+from pykml import parser
+from lxml import etree
+import xml.etree.ElementTree as ET
+from bs4 import BeautifulSoup
+import re
+
+def isLineEmpty(line):
+    return len(line.strip()) == 0
+
+path = r'C:\Users\RSLAB\Desktop'
+
+file = '\\test.kml'
+
+test = path+file 
+
+f = open(test, 'r',encoding='UTF-8')
+
+soup = BeautifulSoup(f, 'lxml')
+
+c = soup.select('coordinates')
+list = []
+for i in c:
+    w = i.text.strip()
+    #w = re.sub(' ', '\n', w)
+    print(w)
