@@ -102,3 +102,4 @@ fuc_6  = Button(window, width = length, height = height, text = fuc_title['6'], 
 
 
 window.mainloop()
+
