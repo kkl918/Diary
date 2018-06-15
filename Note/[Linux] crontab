@@ -52,3 +52,7 @@ $ 0   9 * * 1-6 node /home/ubuntu/workspace/report.js       每天早上九點�
 $ 40 08 * * 1-5 /usr/bin/python3.5 /home/kk/clock_in/on.py  每天的8:40 週一到週五 /usr/bin/python3.5 執行/home/kk/clock_in/on.py
 $ 00 18 * * 1-5 /usr/bin/python3.5 /home/kk/clock_in/off.py 每天的8:40 週一到週五 /usr/bin/python3.5 執行/home/kk/clock_in/off.py
 $ 0 */3 * * 1-5 /usr/bin/python3.5 /home/kk/clock_in/off.py 每小時執行 週一到週五 /usr/bin/python3.5 >> /home/kk/Desktop/cron.log
+
+ptt_beauty
+*/5 * * * * /usr/bin/python3.5 /home/k1/Desktop/linebot/ptt_beauty.py >> /home/k1/Desktop/get.log 2>&1
+
