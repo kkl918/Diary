@@ -1,0 +1,30 @@
+import paramiko
+import sys
+
+## EDIT SSH DETAILS ##
+
+SSH_ADDRESS = ["192.168.0.123","192.168.0.172"]
+SSH_USERNAME = "pi"
+SSH_PASSWORD = "123456"
+SSH_COMMAND = "sudo "
+
+## CODE BELOW ##
+
+ssh = paramiko.SSHClient()
+ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+
+ssh_stdin = ssh_stdout = ssh_stderr = None
+if sys.argv[1].startswith('--'):
+    option = sys.argv[1][2:]
+    try:
+        for pi in SSH_ADDRESS:
+            ssh.connect(pi, username=SSH_USERNAME, password=SSH_PASSWORD)
+            ssh_stdin, ssh_stdout, ssh_stderr = ssh.exec_command(SSH_COMMAND+option)
+            print(SSH_COMMAND + option + ' ' + pi)
+    except Exception as e:
+            print('wrong argument.')
+            sys.exit()
+            #sys.stderr.write("SSH connection error: {0}".format(e))
+else:
+    print('wrong type argv')
+    sys.exit()
