@@ -1,0 +1,241 @@
+先做好硬碟分割
+PS. 本人指令功力不足(掩面)，我會先藉助Gparted圖形介面分割軟體做好分割，分割後記得等等要安裝的分割區代號（像是/dev/sda3那種）
+
+掛載要安裝的分割區
+$ mount /dev/sda3 /mnt  #我是安裝在sda3分割區
+$ dhcpcd	#開啟有線網路自動抓取IP
+$ pacstrap /mnt base base-devel	#安裝Linuix所需基本檔案環境
+
+產生需要的自動掛載設定檔
+$ genfstab -p /mnt >> /mnt/etc/fstab
+
+暫時切換根目錄到/mnt裡
+$ arch-chroot /mnt 
+
+安裝開機選單
+$ pacman -S grub-bios os-prober
+$ grub-mkconfig –o /boot/grub/grub.cfg
+$ grub-install /dev/sda
+
+設定語言
+$ nano /etc/locale.gen
+zh_TW.UTF-8 UTF-8
+zh_TW.BIG5
+$ locale-gen
+$ echo LANG=en_US.UTF-8 > /etc/locale.conf
+$ export LANG= en_US.UTF-8
+
+設定電腦名稱
+$ echo Yuan-NB > /etc/hostname
+
+設定硬體時鐘（hardware clock）
+$ ln -s /usr/share/zoneinfo/Asia/Taipei /etc/localtime
+$ hwclock --systohc –-localtime
+
+建立初始的ramdisk環境
+$ mkinitcpio -p linux
+
+安裝網路
+$ pacman –S wicd wicd-gtk
+$ systemctl enable wicd.service
+
+安裝ntfs檔案格式支援
+$ pacman -S ntfs-3g
+
+設定sudo權限
+$ visudo
+%sudo  ALL=(ALL) ALL
+$ groupadd sudo
+
+
+安裝相關的驅動程式（我以我的電腦K52JB為例，請自行根據情況調整）
+$ pacman -S xf86-video-ati
+$ pacman -S xf86-input-synaptics
+
+啟用音效
+$ pacman -S alsa-utils
+
+啟用藍芽
+$ systemctl enable bluetooth.service
+$ pacman –S blueman
+
+設定root帳號的密碼
+$ passwd
+編輯Fstab自動掛載
+$ blkid	#查詢所有分割區的UUID
+$ nano /etc/fstab
+
+啟用休眠
+在guub.cfg裡的項目的linux那行後面加上resume=/dev/disk/by-uuid/<swap分割區的uuid>
+$ nano /etc/mkinitcpio.conf
+把"resume"加在"ide", "scsi" "sata" 之後，在 "filesystems"之前
+$ mkinitcpio -p linux
+
+離開/mnt資料夾
+$ exit
+
+$ umount /mnt	#取消掛載
+$ reboot	#把電腦重開機
+
+==============================================
+重開機之後...
+
+建立你自己以後要使用的使用者帳號
+$ useradd -m -g users -s /bin/bash yuan	#在此以我的帳號:yuan為例
+$ passwd yuan
+$ gpasswd -a yuan sudo
+$ gpasswd -a yuan wheel
+
+安裝常用的軟體
+$ sudo pacman -S wget vim jshon git
+
+安裝packer套件安裝程式（雖然有pacman，但如果要使用aur套件庫的東西，則需使用此程式）
+$ sudo pacman -S jshon expac
+$ wget https://aur.archlinux.org/packages/pa/packer/packer.tar.gz
+$ tar zxvf packer.tar.gz
+$ cd packer
+$ makepkg PKGBUILD
+$ sudo pacman -U packer-20120302-1-any.pkg.tar.xz	#請根據實際下載到的檔名
+
+安裝文泉驛字體
+# sudo pacman -S wqy-bitmapfont wqy-zenhei
+
+安裝KDE桌面環境
+$ pacman –S kde
+$ systemctl enable kdm.service
+
+安裝gtk相容於kde的套件
+$ sudo pacman -S oxygen-gtk3 oxygen-gtk2
+$ sudo packer -S kde-gtk-config
+
+安裝gcin輸入法
+$ sudo pacman -S gcin libchewing anthy	#libchewing:酷音輸入法 anthy:日文輸入
+$ vim ~/.xprofile
+export LC_CTYPE=zh_TW.UTF-8
+export XMODIFIERS=@im=gcin
+gcin &
+
+$ sudo reboot
+==============================================
+進入桌面後，開啟終端機，然後...
+
+安裝圖形介面套件管理程式
+$ sudo pacman -S gnome-packagekit apper
+
+安裝Firefox
+$ sudo pacman -S firefox firefox-i18n-zh-tw
+
+安裝Chromium
+$ sudo pacman -S chromium
+
+瀏覽器所需常用外掛
+$ sudo pacman -S flashplugin icedtea-web-java7
+
+安裝LibreOffice
+$ sudo pacman -S libreoffice
+	在"有 109 個提供者可供 libreoffice-langpack"地方選擇"libreoffice-zh-TW"吧～
+
+安裝kamoso
+$ sudo packer -Ss kamoso
+
+安裝Skype
+# sudo nano /etc/pacman.conf
+	取消註解以下兩行的註解:
+		[multilib]
+		Include = /etc/pacman.d/mirrorlist
+$ sudo pacman -S skype
+
+安裝wine轉譯器
+$ sudo pacman -S wine q4wine playonlinux
+
+安裝影音播放軟體
+$ sudo pacman -S audacious smplayer smplayer-themes vlc
+
+安裝繪圖軟體
+$ sudo pacman -S gimp xsane xsane-gimp gimp-plugin-fblur gimp-plugin-gmic gimp-plugin-lqr gimp-plugin-mathmap gimp-plugin-wavelet-decompose gimp-plugin-wavelet-denoise gimp-refocus gimp-ufraw
+
+安裝印表機
+$ sudo pacman -S cups
+$ sudo nano /etc/systemd/system/cups.socket
+.include /usr/lib/systemd/system/cups.socket
+
+[Socket]
+ListenStream=0.0.0.0:631
+ListenDatagram=0.0.0.0:631
+BindIPv6Only=ipv6-only
+
+$ sudo gpasswd -a yuan lp
+$ sudo gpasswd -a yuan lpadmin
+$ sudo systemctl enable cupsd.service
+$ sudo systemctl start cupsd.service
+
+安裝伺服器
+$ sudo pacman -S samba
+$ sudo cp /etc/samba/smb.conf.default /etc/samba/smb.conf
+$ sudo nano /etc/samba/smb.conf
+$ sudo systemctl enable smbd.service
+$ sudo packer -S system-config-samba	#安裝圖形介面的Samba設定視窗
+$ cp -R /usr/lib/python3.3/site-packages/scsamba /usr/lib/python2.7/site-packages/ 	#修正無法啟動程式的問題
+
+安裝開發環境
+
+$ sudo pacman -S geany geany-plugins eclipse eclipse-ecj eclipse-cdtkdevelop kdevelop-php kdevelop-python
+$ sudo packer -S qtadb eclipse-android android-sdk-platform-tools eclipse-jigloo eclipse-egit
+
+系統資訊
+$ sudo packer -S cpu-g sysinfo
+$ sudo pacman -S dmidecode 
+
+Gnome桌面環境
+$ sudo pacman -S gnome gnome-extra
+
+安裝VirtualBox虛擬電腦
+$ sudo pacman -Syu
+$ sudo pacman -S virtualbox virtualbox-guest-iso virtualbox-guest-dkms virtualbox-guest-utils virtualbox-host-dkms virtualbox-host-modules phpvirtualbox linux-headers
+將電腦重開機
+$ sudo dkms autoinstall
+$ sudo systemctl enable dkms.service
+$ sudo systemctl enable vboxservice.service
+$ sudo gpasswd -a yuan vboxusers
+將電腦重開機
+$ sudo VBoxManage hostonlyif create
+
+安裝網頁伺服器
+$ sudo pacman -S apache php php-apache phpmyadmin php-mcrypt
+$ sudo systemctl enable httpd.service
+$ sudo systemctl enable mysqld.service
+$ sudo nano /etc/php/php.ini
+把以下3個註解取消
+	extension=pdo_mysql.so
+	extension=mysqli.so
+	extension=mysql.so
+$ cp /etc/webapps/phpmyadmin/apache.example.conf /etc/httpd/conf/extra/httpd-phpmyadmin.conf
+$ sudo -i
+$ echo -e "\nInclude conf/extra/httpd-phpmyadmin.conf" >> /etc/httpd/conf/httpd.conf
+$ echo -e "\nInclude conf/extra/php5_module.conf" >> /etc/httpd/conf/httpd.conf
+$ echo -e "\nLoadModule php5_module modules/libphp5.so" >> /etc/httpd/conf/httpd.conf
+$ nano /usr/share/webapps/phpMyAdmin/.htaccess
+	把deny from all註解or砍掉
+$ sudo systemctl restart httpd.service
+$ exit
+
+安裝其他
+$ sudo pacman -S gparted htop blueman stardict filezilla
+$ sudo packer -S grub-customizer
+
+$ sudo packer -S kde-servicemenus-rootactions
+$ sudo packer -S partitionmanager-svn
+
+$ sudo pacman -S cinnamon cinnamon-control-center cinnamon-control-center
+==============================================
+待裝:
+samba, ssh, apache, mysql, titanium studio, aptana studio, gnome-extra, zsh, emac, lxde
+設定字體、連結
+
+參考資料:
+- https://gist.github.com/bcbcarl/5d3d9c41d728eef395dd (推薦！Carl大神寫的XD)
+- https://gist.github.com/bcbcarl/2d4c77cc06955f74bd0b
+
+- https://wiki.archlinux.org/index.php/Installation_Guide_%28%E6%AD%A3%E9%AB%94%E4%B8%AD%E6%96%87%29
+- https://wiki.archlinux.org/index.php/Beginners%27_Guide_%28%E6%AD%A3%E9%AB%94%E4%B8%AD%E6%96%87%29
+- https://wiki.archlinux.org/index.php/Work_and_Play_with_Arch_%28%E6%AD%A3%E9%AB%94%E4%B8%AD%E6%96%87%29
