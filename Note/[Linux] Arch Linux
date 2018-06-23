@@ -1,3 +1,59 @@
+起始
+pacman -Syy
+fdisk -l
+cfdisk /dev/sda
+mkfs.ext4 /dev/sda1
+
+
+掛載要安裝的分割區
+mount /dev/sda1 /mnt
+pacstrap /mnt base base-devel
+
+
+產生需要的自動掛載設定檔
+genfstab -U -p /mnt >> /mnt/etc/fstab
+cat /mnt/etc/fstab
+arch-chroot /mnt /bin/bash
+
+安裝開機選單
+pacman -S grub
+grub-mkconfig –o /boot/grub/grub.cfg
+grub-install /dev/sda
+
+設定語言
+nano /etc/locale.gen
+zh_TW.UTF-8 UTF-8
+zh_TW.BIG5
+locale-gen
+
+
+設定電腦名稱
+echo kk > /etc/hostname
+
+建立初始的ramdisk環境
+$ mkinitcpio -p linux
+
+離開/mnt資料夾
+$ exit
+
+$ umount /mnt	#取消掛載
+$ reboot	#把電腦重開機
+
+重開機之後...
+
+建立你自己以後要使用的使用者帳號
+$ useradd -m -g users -s /bin/bash yuan	#在此以我的帳號:yuan為例
+$ passwd yuan
+$ gpasswd -a yuan sudo
+$ gpasswd -a yuan wheel
+
+設定sudo權限
+$ visudo
+%sudo  ALL=(ALL) ALL
+$ groupadd sudo
+usermod -aG sudo <username>
+
+---------------------------------------------------------------------------------------------------------------------
 先做好硬碟分割
 PS. 本人指令功力不足(掩面)，我會先藉助Gparted圖形介面分割軟體做好分割，分割後記得等等要安裝的分割區代號（像是/dev/sda3那種）
 
