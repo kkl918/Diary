@@ -2,6 +2,9 @@ import pandas as pd
 import shutil, pathlib, os, glob,csv
 import matplotlib.pyplot as plt
 import numpy             as np
+#from sklearn.cross_validation import train_test_split
+from sklearn.model_selection import train_test_split
+from sklearn import datasets, linear_model
 
 file_list = []
 dfs =[]
@@ -60,41 +63,55 @@ def step_2():
     con_2 = ['交易年月日','鄉鎮市區','交易標的','單價(元/平方公尺)']
     s2 = os.path.join(dir,'ok.csv')
     df = pd.read_csv(s2, encoding='big5')          
-    north = df.loc[(df['鄉鎮市區'] == '北區'  ) & (df['交易標的'] == '房地(土地+建物)+車位')].to_csv(os.path.join(dir,'north.csv'  ), columns=con_2, encoding='big5', index=False)
-    #east  = df.loc[(df['鄉鎮市區'] == '東區'  ) & (df['交易標的'] == '房地(土地+建物)+車位')].to_csv(os.path.join(dir,'東區.csv'  ), columns=con_2, encoding='big5', index=False)
-    #mid   = df.loc[(df['鄉鎮市區'] == '中西區') & (df['交易標的'] == '房地(土地+建物)+車位')].to_csv(os.path.join(dir,'中西區.csv'), columns=con_2, encoding='big5', index=False)
+    north     = df.loc[(df['鄉鎮市區'] == '北區'  ) & (df['交易標的'] == '房地(土地+建物)+車位')].to_csv(os.path.join(dir,'north.csv'   ), columns=con_2, encoding='big5', index=False)
+    east      = df.loc[(df['鄉鎮市區'] == '東區'  ) & (df['交易標的'] == '房地(土地+建物)+車位')].to_csv(os.path.join(dir,'east.csv'    ), columns=con_2, encoding='big5', index=False)
+    midwest   = df.loc[(df['鄉鎮市區'] == '中西區') & (df['交易標的'] == '房地(土地+建物)+車位')].to_csv(os.path.join(dir,'.midwest.csv'), columns=con_2, encoding='big5', index=False)
     
 
-def step_3():
-    date_list  = []
-    price_list = []
-    s3   = os.path.join(dir,'north.csv')
-    df = pd.read_csv(s3, encoding='big5') 
+def step_3(name):
+
     need = ['交易年月日','單價(元/平方公尺)']
-    df   = df[need]
-
-    df['交易年月日'] = df['交易年月日']//10000
+    s3   = os.path.join(dir, name)
+    df = pd.read_csv(s3, encoding='big5')[need]
+    df['交易年月日'] = df['交易年月日']//100
     df['單價(元/平方公尺)'] = df['單價(元/平方公尺)']*10/3/10000
-    
-    df['單價(元/平方公尺)'].plot()
+    df.plot(kind='scatter', x='交易年月日' , y='單價(元/平方公尺)', marker='.')
     plt.show()
 
-    price_104  = df.loc[(df['交易年月日'] == 104)]
-    price_105  = df.loc[(df['交易年月日'] == 105)]
-    price_106  = df.loc[(df['交易年月日'] == 106)]
-    price_104_ = df.loc[(df['交易年月日'] == 104)]['單價(元/平方公尺)'].tolist()
-    price_105_ = df.loc[(df['交易年月日'] == 105)]['單價(元/平方公尺)'].tolist()
-    price_106_ = df.loc[(df['交易年月日'] == 106)]['單價(元/平方公尺)'].tolist()    
+    # price_104  = df.loc[(df['交易年月日'] == 104)]
+    # price_105  = df.loc[(df['交易年月日'] == 105)]
+    # price_106  = df.loc[(df['交易年月日'] == 106)]
+    # price_104_ = df.loc[(df['交易年月日'] == 104)]['單價(元/平方公尺)'].tolist()
+    # price_105_ = df.loc[(df['交易年月日'] == 105)]['單價(元/平方公尺)'].tolist()
+    # price_106_ = df.loc[(df['交易年月日'] == 106)]['單價(元/平方公尺)'].tolist()    
+    return df 
     
-    #df1.merge(df2,how='left', left_on='Column1', right_on='ColumnA')
 
+def step_4(df):   
+    x = df[['交易年月日']]
+    y = df[['單價(元/平方公尺)']]
     
+    X_train,  X_test, Y_train, Y_test = train_test_split(x, y,test_size=0.3)
+    # print(X_train.head())
+    regr = linear_model.LinearRegression()
+    regr.fit(X_train, Y_train)
+    
+    plt.scatter(X_test, Y_test, color='blue', marker='.')
+    plt.plot(X_test, regr.predict(X_test), color='green')
+    plt.show()
     
 def main():
     #init()
     #merge()
     #step_1()
     #step_2()
-    step_3()
+    step_4(step_3('north.csv'))
+    
+    
+    
+    
+    
+    
+    
     
 main()
