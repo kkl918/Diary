@@ -1,0 +1,129 @@
+import pandas as pd
+import shutil, pathlib, os, glob,csv
+import matplotlib.pyplot as plt
+import numpy             as np
+#from sklearn.cross_validation import train_test_split
+from sklearn.model_selection import train_test_split
+from sklearn import datasets, linear_model
+
+file_list = []
+dfs =[]
+
+area = ['中西區', '北區', '東區']
+
+
+
+dir = os.path.dirname(os.path.realpath(__file__))
+file = os.path.join(dir,'output.csv') 
+
+
+
+# 初始化建立一個CSV，並賦予標頭。        
+def init():
+    index = r'鄉鎮市區,交易標的,土地區段位置/建物區段門牌,土地移轉總面積(平方公尺),都市土地使用分區,非都市土地使用分區,非都市土地使用編定,交易年月日,交易筆棟數,移轉層次,總樓層數,建物型態,主要用途,主要建材,建築完成年月,建物移轉總面積(平方公尺),建物現況格局-房,建物現況格局-廳,建物現況格局-衛,建物現況格局-隔間,有無管理組織,總價(元),單價(元/平方公尺),車位類別,車位移轉總面積(平方公尺),車位總價(元),備註,編號'
+    with open(file, 'a') as init:
+        init.write(index)
+
+def merge():   
+    for item in os.listdir(dir):
+        if os.path.isdir(os.path.join(dir,item)):
+            path = os.path.join(dir,item)
+            os.chdir(path)
+            for file in glob.glob("D_lvr_land_A.csv"):
+                target = os.path.join(path,file)
+                print("Dealing with : ",target)
+                # #好像不必要正規化檔名
+                # #os.rename(target,  item + '.csv') 
+                file_list.append(target)    
+                with open(target,errors = 'ignore') as f:
+                    for i in f:
+                        if i[:3] in area:
+                            add_to_csv(i)
+                        elif i[:2] in area:
+                            add_to_csv(i)            
+
+
+def add_to_csv(content):
+    with open(file,'a') as f:
+        f.write(content)
+        f.close()        
+
+# 拿掉不要的欄位
+def step_1():
+    s1 = os.path.join(dir,'ok.csv')
+    con_1 = ['鄉鎮市區','交易標的','土地移轉總面積(平方公尺)','建物型態','交易年月日','建物移轉總面積(平方公尺)','總價(元)','單價(元/平方公尺)']
+    con_2 = ['交易年月日','鄉鎮市區','交易標的','單價(元/平方公尺)']
+    df = pd.read_csv(file,encoding='big5')
+    df = df[con_2]
+    open(s1,'w')
+    df.to_csv(s1, encoding='big5')
+    
+# 區域各自合併(北、中西、東)
+def step_2():   
+    con_2 = ['交易年月日','鄉鎮市區','交易標的','單價(元/平方公尺)']
+    s2 = os.path.join(dir,'ok.csv')
+    df = pd.read_csv(s2, encoding='big5')          
+    north     = df.loc[(df['鄉鎮市區'] == '北區'  ) & (df['交易標的'] == '房地(土地+建物)+車位')].to_csv(os.path.join(dir,'north.csv'   ), columns=con_2, encoding='big5', index=False)
+    east      = df.loc[(df['鄉鎮市區'] == '東區'  ) & (df['交易標的'] == '房地(土地+建物)+車位')].to_csv(os.path.join(dir,'east.csv'    ), columns=con_2, encoding='big5', index=False)
+    midwest   = df.loc[(df['鄉鎮市區'] == '中西區') & (df['交易標的'] == '房地(土地+建物)+車位')].to_csv(os.path.join(dir,'midwest.csv'), columns=con_2, encoding='big5', index=False)
+    
+
+def step_3(name):
+    mean_list = []
+    need = ['交易年月日','單價(元/平方公尺)']
+    s3   = os.path.join(dir, name)
+    df = pd.read_csv(s3, encoding='big5')[need]
+    df['交易年月日'] = df['交易年月日']//10000
+    df['單價(元/平方公尺)'] = df['單價(元/平方公尺)']*10/3/10000
+    # df.plot(title=name[:-4]+' scatter',kind='scatter', x='交易年月日' , y='單價(元/平方公尺)', marker='.')
+    # plt.show()
+    # df.mean().plot(kind='bar')
+    # plt.show()
+    # price_104  = df.loc[(df['交易年月日'] == 104)]
+    # price_105  = df.loc[(df['交易年月日'] == 105)]
+    # price_106  = df.loc[(df['交易年月日'] == 106)]
+    price_103 = mean_list.append(float('%.2f' % df.loc[(df['交易年月日'] == 103)]['單價(元/平方公尺)'].mean()))
+    price_104 = mean_list.append(float('%.2f' % df.loc[(df['交易年月日'] == 104)]['單價(元/平方公尺)'].mean()))
+    price_105 = mean_list.append(float('%.2f' % df.loc[(df['交易年月日'] == 105)]['單價(元/平方公尺)'].mean()))
+    price_106 = mean_list.append(float('%.2f' % df.loc[(df['交易年月日'] == 106)]['單價(元/平方公尺)'].mean()))   
+    # price_107 = df.loc[(df['交易年月日'] == 107)]['單價(元/平方公尺)'].mean() 
+    
+    
+    # index = ['103', '104', '105', '106']
+    
+    # m = pd.DataFrame({ 'mean' : mean_list },index=index)
+    # plt.scatter(x, y)
+    # plt.show()
+    # print(m)
+    return print(df)
+    
+
+def step_4(df):   
+    x = df[['交易年月日']]
+    y = df[['單價(元/平方公尺)']]
+    
+    X_train,  X_test, Y_train, Y_test = train_test_split(x, y,test_size=0.3)
+    #print(X_train.head())
+    regr = linear_model.LinearRegression()
+    regr.fit(X_train, Y_train)
+    
+    # plt.scatter(X_test, Y_test, color='blue', marker='.')
+    # plt.plot(X_test, regr.predict(X_test), color='green')
+    # plt.show()
+    
+def main():
+    # init()
+    # merge()
+    # step_1()
+    # step_2()
+    step_3('north.csv')
+    # step_4(step_3('north.csv'))
+    
+    
+    
+    
+    
+    
+    
+    
+main()
