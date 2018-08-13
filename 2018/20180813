@@ -1,0 +1,35 @@
+def linearRe():
+    from sklearn                  import datasets, linear_model
+    from sklearn.preprocessing    import PolynomialFeatures
+    from sklearn.cross_validation import train_test_split
+    from sklearn.preprocessing    import StandardScaler
+
+    quadratic = PolynomialFeatures(degree=2)
+
+    df = pd.read_csv('A_LVR_LAND_A.csv', encoding='big5')
+    X = df[['建物移轉總面積平方公尺']]
+    y = df[['總價元']]
+
+    X_train, X_test, y_train, y_test = train_test_split(X,y, test_size = 0.3) # 30% for testing, 70% for training
+    X_train.head()
+
+    X_train_raw = X_train.copy()
+    X_test_raw  = X_test.copy()
+
+    X_train     = quadratic.fit_transform(X_train_raw)
+    X_test      = quadratic.fit_transform(X_test_raw)
+
+    X_fit       = pd.DataFrame(np.arange(0, 0.1, 0.01))
+
+    regr        = linear_model.LinearRegression()
+
+    regr.fit(X_train, y_train)
+
+    print('各變項參數: \n', regr.coef_)
+    print("均方誤差 (Mean squared error, MSE): %.2f" % np.mean((regr.predict(X_test) - y_test) ** 2))
+
+
+    plt.scatter(X_test_raw, y_test,  color='blue', marker = 'x')
+    plt.plot(X_fit, regr.predict(quadratic.fit_transform(X_fit)), color='green', linewidth=1)
+
+    plt.show()
