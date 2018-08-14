@@ -199,6 +199,7 @@ def main():
     # east_n    = get_mean(step_2(step_1('select_col.csv'), 'east.csv'   , area[1], status[2]))
     # midwest_n = get_mean(step_2(step_1('select_col.csv'), 'midwest.csv', area[2], status[2]))
     
+    # plt.rcParams['font.family'] = 'SimHei'
     # plt.plot(index, north_y  , label = 'north_y')
     # plt.plot(index, midwest_y, label = 'midwset_y')
     # plt.plot(index, east_y   , label = 'east_y')
