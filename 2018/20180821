@@ -1,0 +1,17 @@
+import numpy as np
+
+a = np.arange(2,17).reshape(3, 5)
+
+A = np.array( [[1,2],
+               [3,4]] )
+              
+B = np.array( [[5,6],
+               [7,8]] )
+               
+elementwise_product = A * B
+matrix_product      = A @ B
+A_Bot_B             = A.dot(B)
+
+print("elementwise product: \n",elementwise_product)
+print("matrix_product: \n"     ,matrix_product)
+print("A.dot(B): \n"           ,A.dot(B))
