@@ -1,0 +1,55 @@
+#include<stdio.h>
+
+void shellsort(int v[], int n);
+
+int main(int argc, char *argv[]){
+	printf("%s\n", argv[0]);
+	int v[] = {9,8,7,6,5,4,3,2,1,0};
+	int i;
+	
+	for(i=0; i<10; i++)
+		printf(" %d  ",v[i]);
+	printf("\n- - - - - - - - - - - - - - - - - - - - \n");
+	
+	shellsort(v, 10);
+	
+	printf("\n- - - - - - - - - - - - - - - - - - - - \n");
+	for(i=0; i<10; i++)
+		printf(" %d  ",v[i]);
+	
+	
+} 
+
+
+void shellsort(int v[], int n){
+	int i, j ,temp, gap,k;
+	for(gap=n/2; gap>0; gap/=2){
+		for(i=gap; i<n; i++){
+			for(j=i-gap; j>=0 && v[j] > v[j+gap]; j-=gap){
+//				printf("gap:%d, i:%d, j:%d\n", gap, i, j);
+//				printf("%d %d\n",v[j],v[j+gap]);
+				temp = v[j];
+				v[j] = v[j+gap];
+				v[j+gap] = temp;
+				
+				for(k=0; k<10; k++){
+					if(v[k] == v[j])
+						printf("[%d] ",v[k]);
+					else if(v[k] == v[j+gap])
+						printf("[%d] ",v[k]);
+					else
+						printf(" %d  ",v[k]);
+				}
+				printf(" | gap:%d, j:%d, i:%d, v[j]:%d, v[j+gap]:%d\n", gap, j, i, v[j], v[j+gap]);
+			}
+	
+
+		}
+		
+			
+				
+		
+	}
+	
+		//printf("\n= = = = = = = = = = =\n");
+}
