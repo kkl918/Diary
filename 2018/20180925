@@ -1,0 +1,58 @@
+#include<stdio.h>
+
+void print(char *p);
+
+int main(){
+	char *p1 = "defg";
+	char *p2 = "hijk";
+	char *p3 = "abc";
+	char *temp;
+	
+	print(p1);
+	print(p2);
+	print(p3);
+	
+	putchar('\n');
+
+	temp = p1; 
+	p1   = p3;
+	p3   = temp;
+
+	print(p1);	
+	print(p2);
+	print(p3);
+
+	putchar('\n');
+	
+	char *p4 = "defg";
+	char *p5 = "hijk";
+	char *p6 = "abc";
+	
+	temp = p4;
+	//p4 = p6;
+	
+	//p6 = p5+4;
+	
+	print(p4);
+	//print(p4);	
+	//print(p5);
+	print(p6);
+	
+	/*
+
+	do {
+		printf("%c",*p1);	
+	}	while(*p1++);
+	
+	while(*p++)
+	putchar(*(p-1));
+		
+	*/
+}
+
+
+void print(char *p){
+	while(*p++)
+	putchar(*(p-1));
+
+}
