@@ -1,0 +1,97 @@
+https://dotblogs.com.tw/michaelfang/2016/09/07/git-reset-log-reflog
+
+主要說明git退版的方法
+
+本文主要git指令: git reset ,git fetch,git pull,git log ,git rflog
+
+
+情境一: 本地undo:退版(reset)
+情境三: 以遠端為主:強推push
+情境二: 以本地為主:重拉pull　　
+
+ 
+
+                               
+
+情境一: 本地undo:退版(reset) 
+            
+ 
+git reset --hard HEAD~1   #退一版commit 到 還沒修改前
+                                        #HEAD~1 每執行一次一次退一版commit
+git clean -f -d   #移除未加入版控的檔案(-f) & 目錄(-d)  *重要*
+git pull             #重拉remote目前版本
+ 
+其他退版到不同階段指令
+--mixed,--soft,--hard的差別      
+e.g 以下舉例 修改檔案經過, change1.txt(commit1),change2.txt (commit2),change3.txt(commit3)　　     
+                                    working(untrack)           staging(add)                      local repos
+ HEAD~3                     change1.txt                  change1.txt                       commit1
+HEAD^^(HEAD~2)       change2.txt                  change2.txt                       commit2
+HEAD^(HEAD~1)         change3.txt                  change3.txt                       commit3(HEAD)
+(--HARD 退到修改前)    (--MIXED 退到working)  (--SOFT 退到added)           commit           
+
+
+HEAD 代表目前狀態　
+回到staging,commit之前 (退回staging,已加入added)
+git reset --soft  HEAD~1     #退回change3.txt  
+
+回到a.working , add之前       #為預設參數  (退回working,修改中)
+git reset --mixed  HEAD~1     #退回change3.txt         
+
+回到修改檔案前  (退回到修改前)
+git reset --hard HEAD~1          #退回到修改change3前  也就是commit2完成的階段
+ 
+
+情境二: 以遠端為主:重拉pull　
+
+git fetch --all                          #取得所有branch
+git reset --hard origin/master  #放棄目前所有staging or unstaging 檔案, 還原成遠端版本origin/master
+git pull origin master               #重拉
+
+情境三: 以本地為主:強迫push
+反之 想以本地的repo為主 強迫push
+git push --force　　　　　
+
+情境四: 以log or reflog 紀錄:來還原commit 編號
+
+git log # 若reset後,還原的紀錄點以後的點都會不存在
+git reset b707 #還原到b707 
+
+D:\git\MyDotNetCore>git log
+commit 956a3311c502c001fb7d711c2cdff6610680e125
+Author: Michael Fang <yingchih.fang@gmail.com>
+Date:   Sat Dec 24 20:51:21 2016 +0800
+
+    2.txt
+
+commit 3de0970c63fadee3adbdb3d2676c853e9bb6ca8c
+Author: Michael Fang <yingchih.fang@gmail.com>
+Date:   Fri Dec 23 23:34:00 2016 +0800
+
+    add 1.txt
+
+commit b707cbca42e0f302eba37f0315afed939ce5c5f9
+Author: Michael Fang <yingchih.fang@gmail.com>
+Date:   Sun Dec 11 09:39:21 2016 +0800
+
+    Modify README.md
+
+若reset錯了 要反悔,可用git reflog 查出所有歷程,再選擇還原點
+git reflog
+git reset 956a  #還原到commit 2.txt的位置
+
+D:\git\MyDotNetCore>git reflog
+956a331 HEAD@{0}: reset: moving to 956a
+73367f6 HEAD@{1}: commit: 333
+e578241 HEAD@{2}: reset: moving to e578
+956a331 HEAD@{3}: reset: moving to head@{5}
+e578241 HEAD@{4}: reset: moving to head@{3}
+956a331 HEAD@{5}: reset: moving to head@{1}
+b707cbc HEAD@{6}: reset: moving to b707
+956a331 HEAD@{7}: reset: moving to HEAD@{1}
+e578241 HEAD@{8}: reset: moving to origin/master
+956a331 HEAD@{9}: reset: moving to HEAD~1
+e578241 HEAD@{10}: commit: 3
+956a331 HEAD@{11}: reset: moving to orig_head
+09c27f1 HEAD@{12}: reset: moving to 09c2
+956a331 HEAD@{13}: commit: 2.txt
