@@ -1,0 +1,11 @@
+measnoise = 10;
+acclnoise = 0.2;
+
+a = [1 dt; 0 1];
+b = [dt^2/2; dt];
+c = [1 0];
+x = [0;0];
+xhat = x;
+Sz = measnoise^2;
+Sw = acclnoise^2;
+P = Sw;
